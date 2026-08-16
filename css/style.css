@@ -1,0 +1,998 @@
+/* =========================================================
+   A/L TECHHUB
+   LESSON + ADMIN UPLOAD STYLES
+   Theme: Blue + White + Teal Data-Saver
+========================================================= */
+
+
+/* =========================================================
+   LESSON PAGE
+========================================================= */
+
+.lesson-page {
+    margin: 0;
+    background: #F8FAFC;
+    color: #111827;
+}
+
+
+/* =========================================================
+   LESSON NAVBAR
+========================================================= */
+
+.lesson-navbar {
+    background: #FFFFFF;
+
+    border-bottom: 1px solid #DBEAFE;
+
+    box-shadow:
+        0 2px 8px rgba(37, 99, 235, 0.06);
+}
+
+
+.btn-lesson-back {
+    border: 1px solid #2563EB;
+
+    color: #2563EB;
+
+    background: #FFFFFF;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.btn-lesson-back:hover {
+    background: #2563EB;
+
+    border-color: #2563EB;
+
+    color: #FFFFFF;
+}
+
+
+.lesson-navbar-title {
+    color: #4B5563;
+
+    font-size: 0.85rem;
+
+    font-weight: 600;
+}
+
+
+.lesson-divider {
+    color: #94A3B8;
+
+    margin: 0 5px;
+}
+
+
+/* =========================================================
+   MAIN LESSON CARD
+========================================================= */
+
+.lesson-main-card {
+    background: #FFFFFF;
+
+    border: 1px solid #E2E8F0;
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 4px 15px rgba(15, 23, 42, 0.04);
+}
+
+
+/* =========================================================
+   DATA SAVER MODE
+========================================================= */
+
+.data-mode-box {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 15px;
+
+    margin-bottom: 18px;
+
+    background: #F0FDFA;
+
+    border: 1px solid #CCFBF1;
+
+    border-radius: 12px;
+}
+
+
+.data-mode-content {
+    display: flex;
+
+    align-items: center;
+}
+
+
+.data-mode-icon {
+    width: 42px;
+
+    height: 42px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: #CCFBF1;
+
+    color: #0F766E;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-right: 12px;
+}
+
+
+.data-mode-box h6 {
+    color: #0F766E;
+}
+
+
+.data-mode-box small {
+    color: #64748B;
+
+    font-size: 0.78rem;
+}
+
+
+.data-mode-switch {
+    cursor: pointer;
+
+    min-width: 40px;
+}
+
+
+.data-mode-switch:checked {
+    background-color: #14B8A6;
+
+    border-color: #14B8A6;
+}
+
+
+.data-mode-switch:focus {
+    box-shadow:
+        0 0 0 0.2rem rgba(20, 184, 166, 0.15);
+}
+
+
+/* =========================================================
+   VIDEO PLAYER
+========================================================= */
+
+.lesson-video-container {
+    width: 100%;
+
+    aspect-ratio: 16 / 9;
+
+    background: #0F172A;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    margin-bottom: 20px;
+}
+
+
+.lesson-video-container video {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+/* =========================================================
+   AUDIO PLAYER
+========================================================= */
+
+.lesson-audio-container {
+    background:
+        linear-gradient(
+            145deg,
+            #0F172A 0%,
+            #172554 100%
+        );
+
+    color: #FFFFFF;
+
+    border-radius: 14px;
+
+    padding: 45px 30px;
+
+    text-align: center;
+
+    margin-bottom: 20px;
+}
+
+
+.audio-icon {
+    width: 70px;
+
+    height: 70px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background: rgba(45, 212, 191, 0.12);
+
+    color: #2DD4BF;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 2rem;
+}
+
+
+.audio-description {
+    color: #94A3B8;
+
+    font-size: 0.8rem;
+
+    margin-bottom: 20px;
+}
+
+
+.audio-description span {
+    margin: 0 6px;
+
+    color: #2DD4BF;
+}
+
+
+.lesson-audio-container audio {
+    width: 100%;
+
+    height: 40px;
+}
+
+
+/* =========================================================
+   LESSON INFORMATION
+========================================================= */
+
+.lesson-information {
+    padding: 5px 5px 0;
+}
+
+
+.lesson-label {
+    color: #14B8A6;
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+}
+
+
+.lesson-information h3 {
+    margin-top: 6px;
+
+    margin-bottom: 10px;
+
+    color: #111827;
+
+    font-size: 1.5rem;
+
+    font-weight: 700;
+}
+
+
+.lesson-description {
+    color: #64748B;
+
+    line-height: 1.7;
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   LESSON SIDE CARDS
+========================================================= */
+
+.lesson-side-card {
+    background: #FFFFFF;
+
+    border: 1px solid #E2E8F0;
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 4px 15px rgba(15, 23, 42, 0.04);
+}
+
+
+/* =========================================================
+   SIDE CARD HEADING
+========================================================= */
+
+.lesson-side-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding-bottom: 15px;
+
+    margin-bottom: 15px;
+
+    border-bottom: 1px solid #E2E8F0;
+}
+
+
+.side-icon {
+    width: 40px;
+
+    height: 40px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+.blue-side-icon {
+    background: #DBEAFE;
+
+    color: #2563EB;
+}
+
+
+.teal-side-icon {
+    background: #CCFBF1;
+
+    color: #0F766E;
+}
+
+
+.lesson-side-heading small {
+    color: #94A3B8;
+
+    font-size: 0.72rem;
+}
+
+
+/* =========================================================
+   LESSON MATERIALS
+========================================================= */
+
+.lesson-materials {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.lesson-material {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px;
+
+    background: #F8FAFC;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    color: #374151;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.lesson-material:hover {
+    background: #EFF6FF;
+
+    border-color: #BFDBFE;
+
+    transform: translateY(-1px);
+
+    color: #1E3A8A;
+}
+
+
+.lesson-material > i:first-child {
+    color: #2563EB;
+
+    font-size: 1.3rem;
+}
+
+
+.lesson-material div {
+    display: flex;
+
+    flex-direction: column;
+
+    flex-grow: 1;
+}
+
+
+.lesson-material strong {
+    font-size: 0.85rem;
+}
+
+
+.lesson-material small {
+    color: #94A3B8;
+
+    font-size: 0.7rem;
+
+    margin-top: 2px;
+}
+
+
+.material-download {
+    color: #64748B !important;
+
+    font-size: 0.9rem !important;
+}
+
+
+.pdf-material > i:first-child {
+    color: #DC2626;
+}
+
+
+/* =========================================================
+   LESSON PRIMARY BUTTON
+========================================================= */
+
+.btn-lesson-primary {
+    background: #2563EB;
+
+    border: 1px solid #2563EB;
+
+    color: #FFFFFF;
+
+    padding: 11px;
+
+    border-radius: 10px;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.btn-lesson-primary:hover {
+    background: #1E3A8A;
+
+    border-color: #1E3A8A;
+
+    color: #FFFFFF;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ADMIN UPLOAD PAGE
+========================================================= */
+
+.admin-upload-page {
+    margin: 0;
+
+    background: #F8FAFC;
+
+    color: #111827;
+}
+
+
+/* =========================================================
+   ADMIN NAVBAR
+========================================================= */
+
+.admin-navbar {
+    background: #FFFFFF;
+
+    border-bottom: 1px solid #DBEAFE;
+
+    box-shadow:
+        0 2px 8px rgba(37, 99, 235, 0.06);
+}
+
+
+.admin-brand {
+    color: #2563EB !important;
+
+    font-weight: 700;
+}
+
+
+.admin-brand i {
+    color: #2563EB;
+}
+
+
+.admin-logout {
+    border: 1px solid #2563EB;
+
+    color: #2563EB;
+
+    background: #FFFFFF;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.admin-logout:hover {
+    background: #2563EB;
+
+    border-color: #2563EB;
+
+    color: #FFFFFF;
+}
+
+
+/* =========================================================
+   ADMIN UPLOAD CARD
+========================================================= */
+
+.admin-upload-card {
+    background: #FFFFFF;
+
+    border: 1px solid #E2E8F0;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 15px rgba(15, 23, 42, 0.04);
+}
+
+
+/* =========================================================
+   ADMIN UPLOAD HEADER
+========================================================= */
+
+.admin-upload-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #EFF6FF 0%,
+            #FFFFFF 100%
+        );
+
+    border-bottom: 1px solid #DBEAFE;
+}
+
+
+.admin-upload-icon {
+    width: 50px;
+
+    height: 50px;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background: #DBEAFE;
+
+    color: #2563EB;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 1.4rem;
+}
+
+
+.admin-upload-header h4 {
+    color: #111827;
+
+    margin-bottom: 3px;
+}
+
+
+.admin-upload-header p {
+    color: #64748B;
+
+    font-size: 0.85rem;
+
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   ADMIN UPLOAD BODY
+========================================================= */
+
+.admin-upload-body {
+    padding: 30px;
+}
+
+
+/* =========================================================
+   ADMIN FORM CONTROLS
+========================================================= */
+
+.admin-upload-body .form-control,
+.admin-upload-body .form-select {
+    border-color: #CBD5E1;
+
+    padding: 11px 12px;
+
+    border-radius: 9px;
+
+    color: #111827;
+}
+
+
+.admin-upload-body .form-control:focus,
+.admin-upload-body .form-select:focus {
+    border-color: #2563EB;
+
+    box-shadow:
+        0 0 0 0.2rem rgba(37, 99, 235, 0.12);
+}
+
+
+.admin-upload-body .form-label {
+    color: #374151;
+
+    font-size: 0.9rem;
+
+    font-weight: 600;
+}
+
+
+.admin-upload-body .form-label i {
+    color: #2563EB;
+}
+
+
+/* =========================================================
+   FILE UPLOAD BOX
+========================================================= */
+
+.admin-file-box {
+    background: #F8FAFC;
+
+    border: 1px dashed #CBD5E1;
+
+    border-radius: 14px;
+
+    padding: 20px;
+}
+
+
+.admin-file-box:hover {
+    background: #EFF6FF;
+
+    border-color: #93C5FD;
+}
+
+
+.admin-file-icon {
+    color: #2563EB;
+
+    font-size: 1.2rem;
+}
+
+
+/* =========================================================
+   ADMIN INFORMATION BOX
+========================================================= */
+
+.admin-info {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 8px;
+
+    padding: 12px;
+
+    margin-top: 10px;
+
+    background: #EFF6FF;
+
+    border: 1px solid #DBEAFE;
+
+    border-radius: 10px;
+
+    color: #1E3A8A;
+
+    font-size: 0.78rem;
+}
+
+
+.admin-info i {
+    color: #2563EB;
+
+    margin-top: 2px;
+}
+
+
+/* =========================================================
+   ADMIN PROCESS BOX
+========================================================= */
+
+.admin-process-box {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 15px;
+
+    background: #F0FDFA;
+
+    border: 1px solid #CCFBF1;
+
+    border-radius: 12px;
+}
+
+
+.admin-process-icon {
+    color: #0F766E;
+
+    font-size: 1.2rem;
+}
+
+
+.admin-process-box strong {
+    color: #0F766E;
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   ADMIN PRIMARY BUTTON
+========================================================= */
+
+.btn-admin-primary {
+    background: #2563EB;
+
+    border: 1px solid #2563EB;
+
+    color: #FFFFFF;
+
+    border-radius: 10px;
+
+    padding: 11px 15px;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.btn-admin-primary:hover {
+    background: #1E3A8A;
+
+    border-color: #1E3A8A;
+
+    color: #FFFFFF;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   GENERAL FOCUS ACCESSIBILITY
+========================================================= */
+
+.lesson-page a:focus-visible,
+.admin-upload-page a:focus-visible,
+.lesson-page button:focus-visible,
+.admin-upload-page button:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.25);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .lesson-navbar-title {
+        font-size: 0.72rem;
+    }
+
+
+    .lesson-main-card {
+        padding: 15px;
+    }
+
+
+    .data-mode-box {
+        align-items: flex-start;
+    }
+
+
+    .lesson-information h3 {
+        font-size: 1.3rem;
+    }
+
+
+    .admin-upload-header {
+        padding: 20px;
+    }
+
+
+    .admin-upload-body {
+        padding: 20px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .lesson-navbar .container {
+        gap: 10px;
+    }
+
+
+    .lesson-navbar-title {
+        text-align: right;
+
+        font-size: 0.65rem;
+    }
+
+
+    .btn-lesson-back {
+        font-size: 0.75rem;
+    }
+
+
+    .data-mode-box {
+        padding: 12px;
+
+        gap: 10px;
+    }
+
+
+    .data-mode-icon {
+        width: 36px;
+
+        height: 36px;
+
+        flex-shrink: 0;
+    }
+
+
+    .lesson-audio-container {
+        padding: 35px 20px;
+    }
+
+
+    .audio-icon {
+        width: 60px;
+
+        height: 60px;
+
+        font-size: 1.7rem;
+    }
+
+
+    .lesson-side-card {
+        padding: 15px;
+    }
+
+
+    .admin-upload-header {
+        align-items: flex-start;
+
+        padding: 18px;
+    }
+
+
+    .admin-upload-icon {
+        width: 42px;
+
+        height: 42px;
+
+        font-size: 1.2rem;
+    }
+
+
+    .admin-upload-header h4 {
+        font-size: 1.05rem;
+    }
+
+
+    .admin-upload-header p {
+        font-size: 0.75rem;
+    }
+
+
+    .admin-upload-body {
+        padding: 18px;
+    }
+
+
+    .admin-file-box {
+        padding: 15px;
+    }
+
+
+    .btn-admin-primary {
+        width: 100%;
+    }
+
+}
