@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Administration Login | A/L TechHub</title>
+
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Bootstrap Icons -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body class="admin-login-page">
+
+
+    <!-- =========================================
+         MAIN WRAPPER
+    ========================================== -->
+
+    <div class="admin-login-wrapper">
+
+
+        <!-- =========================================
+             LEFT SIDE
+        ========================================== -->
+
+        <div class="admin-login-sidebar">
+
+            <div class="admin-sidebar-content">
+
+
+                <!-- Logo -->
+
+                <a
+                    href="index.html"
+                    class="admin-logo text-decoration-none"
+                >
+
+                    <i class="bi bi-mortarboard-fill me-1"></i>
+
+                    A/L TechHub
+
+                </a>
+
+
+                <!-- Main Content -->
+
+                <div class="admin-sidebar-main">
+
+                    <span class="admin-sidebar-label">
+                        ADMINISTRATION PORTAL
+                    </span>
+
+
+                    <h1>
+                        Manage the
+                        <span>Learning Platform.</span>
+                    </h1>
+
+
+                    <p>
+                        Access the administration portal to manage
+                        students, learning resources, subjects,
+                        and platform content.
+                    </p>
+
+
+                    <!-- Admin Features -->
+
+                    <div class="admin-benefits">
+
+
+                        <div class="admin-benefit">
+
+                            <div class="admin-benefit-icon">
+
+                                <i class="bi bi-people-fill"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Student Management
+                                </strong>
+
+                                <small>
+                                    Manage registered students
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="admin-benefit">
+
+                            <div class="admin-benefit-icon">
+
+                                <i class="bi bi-journal-text"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Learning Resources
+                                </strong>
+
+                                <small>
+                                    Manage educational content
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="admin-benefit">
+
+                            <div class="admin-benefit-icon">
+
+                                <i class="bi bi-bar-chart-fill"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Platform Monitoring
+                                </strong>
+
+                                <small>
+                                    Monitor student learning progress
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- Footer -->
+
+                <div class="admin-sidebar-footer">
+
+                    <i class="bi bi-shield-lock-fill me-1"></i>
+
+                    Authorized administration access only.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================================
+             RIGHT SIDE
+        ========================================== -->
+
+        <div class="admin-login-content">
+
+
+            <div class="admin-login-form-container">
+
+            
+
+                <!-- Heading -->
+
+                <div class="admin-login-heading">
+
+                    <span class="admin-login-label">
+                        SECURE ACCESS
+                    </span>
+
+
+                    <h2>
+                        Administration Login
+                    </h2>
+
+
+                    <p>
+                        Sign in to manage A/L TechHub.
+                    </p>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     LOGIN CARD
+                ========================================== -->
+
+                <div class="admin-login-card">
+
+
+                    <form>
+
+
+                        <!-- Admin Username -->
+
+                        <div class="mb-4">
+
+                            <label
+                                for="adminUsername"
+                                class="form-label fw-semibold"
+                            >
+                                Administrator Username
+                            </label>
+
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    <i class="bi bi-person-badge"></i>
+
+                                </span>
+
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="adminUsername"
+                                    placeholder="Enter administrator username"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="mb-3">
+                            <label for="adminPassword" class="form-label fw-bold">
+                                Password
+                            </label>
+
+                            <div class="input-group">
+
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    id="adminPassword"
+                                    name="password"
+                                    placeholder="Enter administrator password"
+                                    required
+                                >
+
+                                <span
+                                    class="input-group-text password-toggle"
+                                    onclick="togglePassword()"
+                                    style="cursor: pointer;"
+                                >
+                                    <i class="bi bi-eye" id="passwordIcon"></i>
+                                </span>
+
+                            </div>
+                        </div>
+
+
+
+                        <!-- Remember -->
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <div class="form-check">
+
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="rememberAdmin"
+                                >
+
+                                <label
+                                    class="form-check-label small"
+                                    for="rememberAdmin"
+                                >
+                                    Remember me
+                                </label>
+
+                            </div>
+
+
+                            <a
+                                href="#"
+                                class="admin-forgot-link"
+                            >
+                                Forgot Password?
+                            </a>
+
+                        </div>
+
+
+
+                        <!-- Login Button -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-admin-login w-100"
+                        >
+
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                            Login to Administration
+
+                        </button>
+
+
+                    </form>
+
+
+                    <!-- Security Message -->
+
+                    <div class="admin-security-message">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        <span>
+                            This area is restricted to authorized
+                            administrators.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Student Login -->
+
+                <div class="admin-bottom">
+
+                    <span>
+                        Are you a student?
+                    </span>
+
+                    <a href="login.html">
+                        Return to Student Login
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+function togglePassword() {
+
+    const passwordInput = document.getElementById("adminPassword");
+    const passwordIcon = document.getElementById("passwordIcon");
+
+    if (passwordInput.type === "password") {
+
+        passwordInput.type = "text";
+
+        passwordIcon.classList.remove("bi-eye");
+        passwordIcon.classList.add("bi-eye-slash");
+
+    } else {
+
+        passwordInput.type = "password";
+
+        passwordIcon.classList.remove("bi-eye-slash");
+        passwordIcon.classList.add("bi-eye");
+
+    }
+}
+</script>
+
+</body>
+
+</html>
