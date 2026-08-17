@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Quiz Results | A/L TechHub</title>
+
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Main CSS -->
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body class="quiz-result-page">
+
+
+    <!-- =========================================
+         NAVIGATION BAR
+    ========================================== -->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top dashboard-navbar">
+
+        <div class="container">
+
+
+            <!-- Brand -->
+
+            <a
+                class="navbar-brand fw-bold dashboard-brand"
+                href="dashboard.html"
+            >
+
+                <i class="bi bi-mortarboard-fill me-1"></i>
+
+                A/L TechHub
+
+            </a>
+
+
+            <!-- Mobile Toggle -->
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navPortal"
+                aria-controls="navPortal"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+
+            <!-- Navbar Content -->
+
+            <div
+                class="collapse navbar-collapse"
+                id="navPortal"
+            >
+
+
+                <!-- Navigation Links -->
+
+                <ul class="navbar-nav me-auto ms-lg-4">
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link dashboard-nav-link"
+                            href="index.html"
+                        >
+
+                            <i class="bi bi-house me-1"></i>
+
+                            Home
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link dashboard-nav-link active"
+                            href="dashboard.html"
+                        >
+
+                            <i class="bi bi-grid-1x2-fill me-1"></i>
+
+                            Dashboard
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link dashboard-nav-link"
+                            href="help.html"
+                        >
+
+                            <i class="bi bi-question-circle me-1"></i>
+
+                            Help
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link dashboard-nav-link"
+                            href="contact.html"
+                        >
+
+                            <i class="bi bi-envelope me-1"></i>
+
+                            Contact Us
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+
+                <!-- User -->
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <a
+                        href="profile.html"
+                        class="dashboard-user text-decoration-none"
+                    >
+                        <i class="bi bi-person-circle me-1"></i>
+                        User Account
+                    </a>
+
+
+                    <a
+                        href="login.html"
+                        class="btn btn-outline-primary btn-sm px-3"
+                    >
+
+                        <i class="bi bi-box-arrow-right me-1"></i>
+
+                        Logout
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="container py-5">
+
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+
+
+                <!-- =====================================
+                     RESULT HEADER
+                ====================================== -->
+
+                <div class="result-card text-center mb-4">
+
+
+                    <!-- Icon -->
+
+                    <div class="result-icon">
+
+                        <i class="bi bi-trophy-fill"></i>
+
+                    </div>
+
+
+                    <!-- Heading -->
+
+                    <span class="result-label">
+                        UNIT ASSESSMENT
+                    </span>
+
+
+                    <h2 class="result-title">
+                        Assessment Completed!
+                    </h2>
+
+
+                    <p class="result-description">
+                        Unit 01: Fundamentals of Physics & Measurement
+                    </p>
+
+
+
+                    <!-- Score -->
+
+                    <div class="result-score-box">
+
+                        <span class="result-score-label">
+                            Your Total Score
+                        </span>
+
+
+                        <div class="result-score">
+                            100%
+                        </div>
+
+
+                        <span class="result-status">
+                            <i class="bi bi-check-circle-fill me-1"></i>
+                            Passed
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- Buttons -->
+
+                    <div class="result-actions">
+
+
+                        <a
+                            href="units.html"
+                            class="btn-result-primary"
+                        >
+
+                            <i class="bi bi-arrow-left me-1"></i>
+
+                            Back to Units
+
+                        </a>
+
+
+                        <a
+                            href="quiz.html"
+                            class="btn-result-outline"
+                        >
+
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+                            Retake Quiz
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =====================================
+                     ANSWER BREAKDOWN
+                ====================================== -->
+
+                <div class="answer-card">
+
+
+                    <div class="answer-heading">
+
+                        <div class="answer-heading-icon">
+
+                            <i class="bi bi-list-check"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h5>
+                                Answer Breakdown
+                            </h5>
+
+                            <p>
+                                Review your answers for this assessment.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Question 01 -->
+
+                    <div class="answer-item correct-answer">
+
+                        <div class="answer-item-top">
+
+                            <span class="answer-question-number">
+                                Question 01
+                            </span>
+
+                            <span class="answer-correct">
+
+                                <i class="bi bi-check-circle-fill me-1"></i>
+
+                                Correct
+
+                            </span>
+
+                        </div>
+
+
+                        <p class="answer-question">
+
+                            Which of the following is a fundamental
+                            base unit?
+
+                        </p>
+
+
+                        <div class="answer-choice">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            <span>
+                                B) Ampere (A)
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Question 02 -->
+
+                    <div class="answer-item correct-answer">
+
+                        <div class="answer-item-top">
+
+                            <span class="answer-question-number">
+                                Question 02
+                            </span>
+
+                            <span class="answer-correct">
+
+                                <i class="bi bi-check-circle-fill me-1"></i>
+
+                                Correct
+
+                            </span>
+
+                        </div>
+
+
+                        <p class="answer-question">
+
+                            What is the dimensional formula for force?
+
+                        </p>
+
+
+                        <div class="answer-choice">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            <span>
+                                A) [M L T⁻²]
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- Bootstrap JavaScript -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    ></script>
+
+
+</body>
+
+</html>
