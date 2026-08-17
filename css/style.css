@@ -4231,3 +4231,388 @@ main > .mb-3 p {
 
     color: #DC2626;
 }
+
+
+
+/* =========================================
+   LESSON BUTTON
+========================================= */
+
+.btn-lesson-primary {
+
+    background: #2563EB;
+
+    border: 1px solid #2563EB;
+
+    color: #FFFFFF;
+
+    padding: 11px;
+
+    border-radius: 10px;
+}
+
+
+.btn-lesson-primary:hover {
+
+    background: #1E3A8A;
+
+    border-color: #1E3A8A;
+
+    color: #FFFFFF;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .lesson-navbar-title {
+
+        font-size: 0.72rem;
+
+    }
+
+
+    .lesson-main-card {
+
+        padding: 15px;
+
+    }
+
+
+    .data-mode-box {
+
+        align-items: flex-start;
+
+    }
+
+
+    .lesson-information h3 {
+
+        font-size: 1.3rem;
+
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .lesson-navbar .container {
+
+        gap: 10px;
+
+    }
+
+
+    .lesson-navbar-title {
+
+        text-align: right;
+
+        font-size: 0.65rem;
+
+    }
+
+
+    .data-mode-box {
+
+        padding: 12px;
+
+    }
+
+
+    .data-mode-icon {
+
+        width: 36px;
+
+        height: 36px;
+
+        flex-shrink: 0;
+
+    }
+
+
+    .lesson-audio-container {
+
+        padding: 35px 20px;
+
+    }
+
+}
+
+/* =========================================
+   UNITS PAGE
+========================================= */
+
+.units-page {
+    background-color: #F8FAFC;
+    color: #111827;
+}
+
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.units-navbar {
+    border-bottom: 1px solid #DBEAFE;
+
+    box-shadow:
+        0 2px 8px rgba(37, 99, 235, 0.06);
+}
+
+
+.units-brand {
+    color: #2563EB !important;
+}
+
+
+.units-brand:hover {
+    color: #1E3A8A !important;
+}
+
+
+.units-nav-link {
+    color: #4B5563 !important;
+
+    font-weight: 500;
+
+    transition: color 0.2s ease;
+}
+
+
+.units-nav-link:hover,
+.units-nav-link.active {
+    color: #2563EB !important;
+}
+
+
+/* =========================================
+   DASHBOARD BUTTON
+========================================= */
+
+.btn-units-outline {
+    background-color: #FFFFFF;
+
+    border: 1px solid #2563EB;
+
+    color: #2563EB;
+}
+
+
+.btn-units-outline:hover {
+    background-color: #2563EB;
+
+    border-color: #2563EB;
+
+    color: #FFFFFF;
+}
+
+
+/* =========================================
+   SUBJECT HEADER
+========================================= */
+
+.units-header {
+    background:
+        linear-gradient(
+            135deg,
+            #EFF6FF 0%,
+            #FFFFFF 100%
+        );
+
+    border: 1px solid #DBEAFE;
+
+    box-shadow:
+        0 4px 15px rgba(37, 99, 235, 0.05);
+}
+
+
+.units-label {
+    color: #14B8A6;
+
+    font-size: 0.75rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+.units-progress-box {
+    background-color: #FFFFFF;
+
+    border: 1px solid #DBEAFE;
+
+    border-radius: 12px;
+
+    padding: 15px;
+}
+
+
+.units-progress-text {
+    color: #2563EB;
+}
+
+
+.units-progress {
+    background-color: #2563EB;
+}
+
+
+/* =========================================
+   SECTION HEADING
+========================================= */
+
+.units-section-label {
+    color: #2563EB;
+
+    font-size: 0.75rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================
+   ACCORDION
+========================================= */
+
+.units-accordion-item {
+    border: 1px solid #E2E8F0 !important;
+
+    border-radius: 16px !important;
+
+    overflow: hidden;
+
+    background-color: #FFFFFF;
+
+    box-shadow:
+        0 4px 12px rgba(37, 99, 235, 0.04);
+}
+
+
+.units-accordion-item .accordion-button {
+    background-color: #FFFFFF;
+
+    color: #111827;
+
+    padding: 20px;
+
+    box-shadow: none;
+}
+
+
+.units-accordion-item .accordion-button:not(.collapsed) {
+    background-color: #EFF6FF;
+
+    color: #111827;
+
+    box-shadow: none;
+}
+
+
+.units-accordion-item .accordion-button:focus {
+    box-shadow:
+        0 0 0 0.2rem rgba(37, 99, 235, 0.10);
+}
+
+
+.units-accordion-item .accordion-body {
+    background-color: #FFFFFF;
+
+    padding: 10px 20px 20px;
+}
+
+
+/* =========================================
+   UNIT NUMBER
+========================================= */
+
+.unit-number {
+    width: 42px;
+
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background-color: #DBEAFE;
+
+    color: #2563EB;
+
+    font-size: 0.85rem;
+
+    font-weight: 800;
+}
+
+
+/* =========================================
+   LESSON ITEM
+========================================= */
+
+.lesson-item {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 18px 10px;
+
+    border-bottom: 1px solid #F1F5F9;
+}
+
+
+.lesson-item:last-child {
+    border-bottom: none;
+}
+
+
+.lesson-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.lesson-icon {
+    width: 42px;
+
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background-color: #DBEAFE;
+
+    color: #2563EB;
+}
+
+
+.lesson-actions {
+    display: flex;
+
+    gap: 8px;
+}
