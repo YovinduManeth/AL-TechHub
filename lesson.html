@@ -151,7 +151,6 @@
                                 type="checkbox"
                                 role="switch"
                                 id="dataModeToggle"
-                                onchange="toggleDataMode()"
                             >
 
                         </div>
@@ -417,69 +416,7 @@
 
     </main>
 
-
-
-    <!-- =========================================
-         JAVASCRIPT
-    ========================================== -->
-
-    <script>
-
-        function toggleDataMode() {
-
-            const isChecked =
-                document.getElementById(
-                    'dataModeToggle'
-                ).checked;
-
-
-            const video =
-                document.getElementById(
-                    'videoContainer'
-                );
-
-
-            const audio =
-                document.getElementById(
-                    'audioContainer'
-                );
-
-
-            const videoPlayer =
-                document.getElementById(
-                    'videoPlayer'
-                );
-
-
-            const audioPlayer =
-                document.getElementById(
-                    'audioPlayer'
-                );
-
-
-            if (isChecked) {
-
-                videoPlayer.pause();
-
-                video.style.display = 'none';
-
-                audio.style.display = 'block';
-
-            }
-
-            else {
-
-                audioPlayer.pause();
-
-                audio.style.display = 'none';
-
-                video.style.display = 'block';
-
-            }
-
-        }
-
-    </script>
+<script src="js/script.js"></script>
 
 
 </body>
