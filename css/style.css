@@ -5737,3 +5737,89 @@ main > .mb-3 p {
 .profile-subject-card h6 {
     color: #111827;
 }
+
+
+/* =========================================
+   VIDEO QUALITY SELECTOR
+========================================= */
+
+.video-quality-box {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 14px 15px;
+
+    margin-bottom: 18px;
+
+    background: #EFF6FF;
+
+    border: 1px solid #DBEAFE;
+
+    border-radius: 12px;
+}
+
+
+.video-quality-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 10px;
+
+    background: #DBEAFE;
+
+    color: #2563EB;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-right: 12px;
+}
+
+
+.video-quality-box h6 {
+
+    color: #1E3A8A;
+
+}
+
+
+.video-quality-box small {
+
+    color: #64748B;
+
+    font-size: 0.78rem;
+}
+
+
+.video-quality-select {
+
+    width: 100px;
+
+    border-color: #BFDBFE;
+
+    color: #1E3A8A;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.video-quality-select:focus {
+
+    border-color: #2563EB;
+
+    box-shadow:
+        0 0 0 0.2rem rgba(37, 99, 235, 0.12);
+}
