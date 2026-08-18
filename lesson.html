@@ -158,6 +158,62 @@
                     </div>
 
 
+                    <!-- =========================================
+                            VIDEO QUALITY SELECTOR
+                        ========================================= -->
+
+                        <div class="video-quality-box">
+
+                            <div class="d-flex align-items-center">
+
+                                <div class="video-quality-icon">
+
+                                    <i class="bi bi-camera-video-fill"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h6 class="fw-bold mb-1">
+                                        Video Quality
+                                    </h6>
+
+                                    <small>
+                                        Select a quality based on your internet connection.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <select
+                                id="videoQuality"
+                                class="form-select form-select-sm video-quality-select"
+                                aria-label="Select video quality"
+                            >
+
+                                <option value="1080p">
+                                    1080p
+                                </option>
+
+                                <option value="720p" selected>
+                                    720p
+                                </option>
+
+                                <option value="480p">
+                                    480p
+                                </option>
+
+                                <option value="360p">
+                                    360p
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
 
                     <!-- =============================
                          VIDEO PLAYER
@@ -174,7 +230,8 @@
                         >
 
                             <source
-                                src="uploads/videos/sample_lesson.mp4"
+                                id="videoSource"
+                                src="uploads/videos/sample_lesson_720p.mp4"
                                 type="video/mp4"
                             >
 
