@@ -260,3 +260,53 @@ function setupVideoQuality() {
 
 // Start Video Quality Selector
 setupVideoQuality();
+
+
+
+// ==========================================
+// REGISTRATION SUCCESS MESSAGE
+// ==========================================
+
+const urlParams = new URLSearchParams(window.location.search);
+
+if (urlParams.get("registered") === "success") {
+
+    const registrationMessage =
+        document.getElementById("registrationMessage");
+
+    if (registrationMessage) {
+
+        registrationMessage.classList.remove("d-none");
+        registrationMessage.classList.add("d-flex");
+
+    }
+
+}
+
+
+
+// ==========================================
+// LOGIN ERROR MESSAGE
+// ==========================================
+
+const loginUrlParams = new URLSearchParams(window.location.search);
+
+if (loginUrlParams.get("error") === "invalid") {
+
+    const loginErrorMessage =
+        document.getElementById("loginErrorMessage");
+
+    if (loginErrorMessage) {
+
+        loginErrorMessage.classList.remove("d-none");
+        loginErrorMessage.classList.add("d-flex");
+
+    }
+
+    window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+    );
+
+}

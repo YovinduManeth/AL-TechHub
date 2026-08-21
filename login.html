@@ -172,6 +172,30 @@
 
             </div>
 
+            <div class="login-form-card">
+
+    <!-- Registration Success Message -->
+    <div
+        id="registrationMessage"
+        class="alert alert-success d-none align-items-center mb-4"
+        role="alert"
+    >
+        <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+
+        <div>
+            <strong>Registration Successful!</strong>
+            <div class="small">
+                Your account is ready. You can now sign in.
+            </div>
+        </div>
+    </div>
+
+
+    <form
+        method="POST"
+        action="php/login_process.php"
+    >
+
 
 
             <!-- =====================================
@@ -179,6 +203,23 @@
             ====================================== -->
 
             <div class="login-form-card">
+
+
+                <!-- Login Error Message -->
+                        <div
+                            id="loginErrorMessage"
+                            class="alert alert-danger d-none align-items-center mb-4"
+                            role="alert"
+                        >
+                            <i class="bi bi-exclamation-circle-fill fs-4 me-3"></i>
+
+                            <div>
+                                <strong>Login Failed!</strong>
+                                <div class="small">
+                                    Incorrect username/email or password. Please try again.
+                                </div>
+                            </div>
+                        </div>
 
 
                 <form
@@ -373,6 +414,28 @@
 <!-- Login JavaScript -->
 
 <script src="js/script.js"></script>
+
+<script src="js/script.js"></script>
+
+
+<script>
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.get("registered") === "success") {
+
+        const message =
+            document.getElementById("registrationMessage");
+
+        message.classList.remove("d-none");
+
+    }
+
+</script>
+
+
+</body>
+
 
 
 </body>

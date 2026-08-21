@@ -5823,3 +5823,55 @@ main > .mb-3 p {
     box-shadow:
         0 0 0 0.2rem rgba(37, 99, 235, 0.12);
 }
+
+
+/* =========================================
+   REGISTRATION SUCCESS MESSAGE
+========================================= */
+
+.registration-success {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 16px;
+    margin-bottom: 20px;
+
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 12px;
+
+    color: #065f46;
+}
+
+.registration-success-icon {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #10b981;
+    color: white;
+
+    border-radius: 50%;
+
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.registration-success-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.registration-success-text strong {
+    font-size: 14px;
+}
+
+.registration-success-text span {
+    font-size: 12px;
+    color: #047857;
+}
