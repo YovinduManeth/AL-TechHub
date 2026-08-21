@@ -152,8 +152,8 @@
             </h1>
 
             <p class="text-muted mb-0">
-                Upload learning materials and generate data-saver
-                audio content for students.
+                Manage lessons, short notes, past papers, and quiz questions
+                for the student learning portal.
             </p>
 
         </div>
@@ -185,12 +185,12 @@
                         <div>
 
                             <h4 class="fw-bold mb-1">
-                                Upload & Transcode Lesson
-                            </h4>
+                                    Learning Content Management
+                                </h4>
 
-                            <p class="mb-0">
-                                Add a new lesson to the student learning portal.
-                            </p>
+                                <p class="mb-0">
+                                    Add and manage learning resources for students.
+                                </p>
 
                         </div>
 
@@ -209,50 +209,125 @@
                         >
 
 
+                        <!-- Resource Type -->
+
+                                <div class="mb-4">
+
+                                    <label class="form-label fw-bold">
+
+                                        <i class="bi bi-collection me-1"></i>
+
+                                        Resource Type
+
+                                    </label>
+
+                                    <select
+                                        class="form-select"
+                                        name="resource_type"
+                                        required
+                                    >
+
+                                        <option value="" selected disabled>
+                                            -- Select Resource Type --
+                                        </option>
+
+                                        <option value="lesson">
+                                            Video Lesson
+                                        </option>
+
+                                        <option value="short_notes">
+                                            Unit Short Notes
+                                        </option>
+
+                                        <option value="past_paper">
+                                            Past Paper
+                                        </option>
+
+                                        <option value="quiz">
+                                            Quiz Question
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
                             <!-- Subject & Unit -->
 
                             <div class="mb-4">
 
-                                <label
-                                    class="form-label fw-bold"
-                                >
+                                <!-- Learning Content Location -->
 
-                                    <i class="bi bi-book me-1"></i>
+                                    <div class="mb-4">
 
-                                    Target Unit & Subject
+                                        <label class="form-label fw-bold">
 
-                                </label>
+                                            <i class="bi bi-book me-1"></i>
+
+                                            Learning Content Location
+
+                                        </label>
 
 
-                                <select
-                                    class="form-select"
-                                    name="unit_id"
-                                    required
-                                >
+                                        <!-- Grade -->
 
-                                    <option
-                                        value=""
-                                        selected
-                                        disabled
-                                    >
-                                        -- Select Syllabus Unit --
-                                    </option>
+                                        <select
+                                            class="form-select mb-2"
+                                            name="grade"
+                                            required
+                                        >
 
-                                    <option value="1">
-                                        [Grade 12] Science for Tech -
-                                        Unit 01: Physics Fundamentals
-                                    </option>
+                                            <option value="" selected disabled>
+                                                -- Select Grade --
+                                            </option>
 
-                                    <option value="2">
-                                        [Grade 12] Engineering Tech -
-                                        Unit 01: Applied Mechanics
-                                    </option>
+                                            <option value="12">
+                                                Grade 12
+                                            </option>
 
-                                    <option value="3">
-                                        [Grade 12] ICT -
-                                        Unit 01: Programming Concepts
-                                    </option>
+                                            <option value="13">
+                                                Grade 13
+                                            </option>
 
+                                        </select>
+
+
+                                        <!-- Subject & Unit -->
+
+                                        <select
+                                            class="form-select"
+                                            name="unit_id"
+                                            required
+                                        >
+
+                                            <option
+                                                value=""
+                                                selected
+                                                disabled
+                                            >
+                                                -- Select Syllabus Unit --
+                                            </option>
+
+                                            <option value="1">
+                                                [Grade 12] Science for Tech -
+                                                Unit 01: Physics Fundamentals
+                                            </option>
+
+                                            <option value="2">
+                                                [Grade 12] Engineering Tech -
+                                                Unit 01: Applied Mechanics
+                                            </option>
+
+                                            <option value="3">
+                                                [Grade 12] ICT -
+                                                Unit 01: Programming Concepts
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+                                    
                                 </select>
 
                             </div>
@@ -325,14 +400,14 @@
                                     <label
                                         class="form-label fw-bold mb-0"
                                     >
-                                        Master Video File
+                                        Lesson Video File
                                     </label>
 
                                 </div>
 
 
                                 <p class="small text-muted mb-3">
-                                    Upload the original MP4 lesson video.
+                                    Upload the MP4 video for this lesson.
                                 </p>
 
 
