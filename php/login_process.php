@@ -1,8 +1,8 @@
-```php
 <?php
 
-require_once "db.php";
+session_start();
 
+require_once "db.php";
 
 // ==========================================
 // ONLY ALLOW POST REQUESTS
@@ -93,8 +93,6 @@ if (!password_verify($password, $user["password"])) {
 // LOGIN SUCCESS
 // ==========================================
 
-session_start();
-
 $_SESSION["user_id"] = $user["user_id"];
 $_SESSION["full_name"] = $user["full_name"];
 $_SESSION["username"] = $user["username"];
@@ -112,7 +110,7 @@ if ($user["role"] === "admin") {
 
 } else {
 
-    header("Location: ../dashboard.html");
+    header("Location: ../dashboard.php");
 
 }
 
