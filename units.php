@@ -2,6 +2,8 @@
 
 session_start();
 
+require_once "php/db.php";
+
 
 // ==========================================
 // CHECK LOGIN
@@ -27,6 +29,74 @@ $full_name = $_SESSION["full_name"];
 // ==========================================
 
 $subject_code = $_GET["subject"] ?? "";
+
+
+// ==========================================
+// GET SUBJECT INFORMATION
+// ==========================================
+
+$sql = "SELECT subject_id, subject_name
+        FROM subjects
+        WHERE subject_code = ?";
+
+$stmt = $conn->prepare($sql);
+
+$stmt->bind_param("s", $subject_code);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+$subject = $result->fetch_assoc();
+
+$stmt->close();
+
+
+// ==========================================
+// CHECK SUBJECT
+// ==========================================
+
+if (!$subject) {
+
+    die("Subject not found.");
+
+}
+
+
+$subject_id = $subject["subject_id"];
+$subject_name = $subject["subject_name"];
+
+
+// ==========================================
+// GET UNITS FROM DATABASE
+// ==========================================
+
+$sql = "SELECT
+            unit_id,
+            grade,
+            unit_number,
+            unit_title
+        FROM units
+        WHERE subject_id = ?
+        ORDER BY grade, unit_number";
+
+$stmt = $conn->prepare($sql);
+
+$stmt->bind_param("i", $subject_id);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+$units = [];
+
+while ($row = $result->fetch_assoc()) {
+
+    $units[] = $row;
+
+}
+
+$stmt->close();
 
 ?>
 
@@ -242,7 +312,7 @@ $subject_code = $_GET["subject"] ?? "";
 
         <h3 class="fw-bold mb-1">
 
-            <?php echo htmlspecialchars($subject_code); ?>
+            <?php echo htmlspecialchars($subject_name); ?>
 
             Units
 
@@ -258,110 +328,92 @@ $subject_code = $_GET["subject"] ?? "";
     </div>
 
 
-    <!-- ==============================
-         Units
-    =============================== -->
+   <!-- ==============================
+     Database Units
+=============================== -->
 
-    <div class="row g-4">
+<div class="row g-4">
 
+    <?php if (empty($units)): ?>
 
-        <!-- Unit 01 -->
+        <div class="col-12">
 
-        <div class="col-md-6">
+            <div class="alert alert-info rounded-4">
 
-            <div class="card subject-card h-100 rounded-4">
-
-                <div class="card-body p-4">
-
-
-                    <span class="badge subject-badge mb-3">
-
-                        Unit 01
-
-                    </span>
-
-
-                    <h5 class="fw-bold">
-
-                        Introduction
-
-                    </h5>
-
-
-                    <p class="text-muted small">
-
-                        Learn the basic concepts and
-                        fundamentals of this subject.
-
-                    </p>
-
-
-                    <a
-                        href="#"
-                        class="btn btn-dashboard fw-bold"
-                    >
-
-                        <i class="bi bi-book me-1"></i>
-
-                        Open Unit
-
-                    </a>
-
-                </div>
+                No units are available for this subject yet.
 
             </div>
 
         </div>
 
+    <?php else: ?>
+
+        <?php foreach ($units as $unit): ?>
+
+            <div class="col-md-6">
+
+                <div class="card subject-card h-100 rounded-4">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge subject-badge mb-3">
+
+                            Unit
+                            <?php
+                            echo str_pad(
+                                $unit["unit_number"],
+                                2,
+                                "0",
+                                STR_PAD_LEFT
+                            );
+                            ?>
+
+                        </span>
 
 
-        <!-- Unit 02 -->
+                        <h5 class="fw-bold">
 
-        <div class="col-md-6">
+                            <?php
+                            echo htmlspecialchars(
+                                $unit["unit_title"]
+                            );
+                            ?>
 
-            <div class="card subject-card h-100 rounded-4">
-
-                <div class="card-body p-4">
-
-
-                    <span class="badge subject-badge mb-3">
-
-                        Unit 02
-
-                    </span>
+                        </h5>
 
 
-                    <h5 class="fw-bold">
+                        <p class="text-muted small">
 
-                        Basic Concepts
+                            Grade
+                            <?php echo htmlspecialchars($unit["grade"]); ?>
 
-                    </h5>
+                            learning content for this unit.
 
-
-                    <p class="text-muted small">
-
-                        Explore the important concepts
-                        related to this subject.
-
-                    </p>
+                        </p>
 
 
-                    <a
-                        href="#"
-                        class="btn btn-dashboard fw-bold"
-                    >
+                        <a
+                            href="unit.php?unit=<?php echo $unit["unit_id"]; ?>"
+                            class="btn btn-dashboard fw-bold"
+                        >
 
-                        <i class="bi bi-book me-1"></i>
+                            <i class="bi bi-book me-1"></i>
 
-                        Open Unit
+                            Open Unit
 
-                    </a>
+                        </a>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
+        <?php endforeach; ?>
+
+    <?php endif; ?>
+
+</div>
 
 
     </div>

@@ -1,3 +1,108 @@
+<?php
+
+session_start();
+
+require_once "php/db.php";
+
+
+// ==========================================
+// CHECK LOGIN
+// ==========================================
+
+if (!isset($_SESSION["user_id"])) {
+
+    header("Location: login.html?error=login_required");
+    exit();
+
+}
+
+
+// ==========================================
+// GET LOGGED-IN STUDENT
+// ==========================================
+
+$full_name = $_SESSION["full_name"];
+
+
+// ==========================================
+// GET LESSON ID
+// ==========================================
+
+$lesson_id = $_GET["lesson"] ?? "";
+
+
+// Make sure lesson ID is a number
+
+if (!is_numeric($lesson_id)) {
+
+    header("Location: dashboard.php");
+    exit();
+
+}
+
+$lesson_id = (int)$lesson_id;
+
+
+// ==========================================
+// GET LESSON DETAILS
+// ==========================================
+
+$sql = "SELECT
+            lessons.lesson_id,
+            lessons.unit_id,
+            lessons.lesson_number,
+            lessons.title,
+            lessons.description,
+            lessons.video_path,
+            lessons.audio_path,
+            lessons.duration_minutes,
+
+            units.unit_number,
+            units.unit_title,
+            units.grade,
+
+            subjects.subject_code,
+            subjects.subject_name
+
+        FROM lessons
+
+        INNER JOIN units
+            ON lessons.unit_id = units.unit_id
+
+        INNER JOIN subjects
+            ON units.subject_id = subjects.subject_id
+
+        WHERE lessons.lesson_id = ?";
+
+
+$stmt = $conn->prepare($sql);
+
+$stmt->bind_param("i", $lesson_id);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+$lesson = $result->fetch_assoc();
+
+$stmt->close();
+
+
+// ==========================================
+// CHECK LESSON EXISTS
+// ==========================================
+
+if (!$lesson) {
+
+    header("Location: dashboard.php");
+    exit();
+
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +115,9 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Lesson Player | A/L TechHub</title>
+    <title>
+        <?php echo htmlspecialchars($lesson["title"]); ?> | A/L TechHub
+    </title>
 
 
     <!-- Bootstrap -->
@@ -54,7 +161,7 @@
             <!-- Back Button -->
 
             <a
-                href="units.html"
+                href="units.php?subject=<?php echo urlencode($lesson["subject_code"]); ?>"
                 class="btn btn-lesson-back btn-sm"
             >
 
@@ -71,11 +178,22 @@
 
                 <i class="bi bi-book me-1"></i>
 
-                SFT
-                <span class="lesson-divider">•</span>
-                Unit 01
-                <span class="lesson-divider">•</span>
-                Lesson 1.1
+                <?php echo htmlspecialchars($lesson["subject_code"]); ?>
+
+            <span class="lesson-divider">•</span>
+
+            Unit
+            <?php echo str_pad(
+                $lesson["unit_number"],
+                2,
+                "0",
+                STR_PAD_LEFT
+            ); ?>
+
+            <span class="lesson-divider">•</span>
+
+            Lesson
+            <?php echo htmlspecialchars($lesson["lesson_number"]); ?>
 
             </span>
 
@@ -231,7 +349,7 @@
 
                             <source
                                 id="videoSource"
-                                src="uploads/videos/sample_lesson_720p.mp4"
+                                src="<?php echo htmlspecialchars($lesson["video_path"] ?? ""); ?>"
                                 type="video/mp4"
                             >
 
@@ -284,7 +402,7 @@
                         >
 
                             <source
-                                src="uploads/audios/sample_lesson.mp3"
+                                src="<?php echo htmlspecialchars($lesson["audio_path"] ?? ""); ?>"
                                 type="audio/mpeg"
                             >
 
@@ -302,27 +420,26 @@
 
                         <span class="lesson-label">
 
-                            LESSON 01
+    LESSON <?php echo htmlspecialchars($lesson["lesson_number"]); ?>
 
-                        </span>
-
-
-                        <h3 class="fw-bold">
-
-                            Lesson 1.1:
-                            SI Units & Dimensional Analysis
-
-                        </h3>
+</span>
 
 
-                        <p class="lesson-description mb-0">
+<h3 class="fw-bold">
 
-                            In this lesson, we examine fundamental
-                            base units, derived units, and dimensional
-                            equations used across physics and
-                            engineering problems.
+    Lesson
+    <?php echo htmlspecialchars($lesson["lesson_number"]); ?>:
 
-                        </p>
+    <?php echo htmlspecialchars($lesson["title"]); ?>
+
+</h3>
+
+
+<p class="lesson-description mb-0">
+
+    <?php echo htmlspecialchars($lesson["description"]); ?>
+
+</p>
 
                     </div>
 
@@ -379,7 +496,7 @@
 
 
         <a
-            href="units.html"
+            href="units.php?subject=<?php echo urlencode($lesson["subject_code"]); ?>"
             class="btn btn-lesson-primary w-100 fw-bold"
         >
 
@@ -427,7 +544,9 @@
             <i class="bi bi-play-circle-fill text-primary"></i>
 
             <span class="small">
-                Lesson 1.1 is currently selected
+                Lesson
+                <?php echo htmlspecialchars($lesson["lesson_number"]); ?>
+                is currently selected
             </span>
 
         </div>
