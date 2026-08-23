@@ -5,6 +5,35 @@ require_once "php/db.php";
 $message = "";
 $message_type = "";
 
+
+// ==========================================
+// GET ALL UNITS
+// ==========================================
+
+$sql = "SELECT
+            units.unit_id,
+            units.grade,
+            units.unit_number,
+            units.unit_title,
+            subjects.subject_code,
+            subjects.subject_name
+        FROM units
+        INNER JOIN subjects
+            ON units.subject_id = subjects.subject_id
+        ORDER BY units.grade ASC,
+                 subjects.subject_code ASC,
+                 units.unit_number ASC";
+
+$result = $conn->query($sql);
+
+$units = [];
+
+while ($row = $result->fetch_assoc()) {
+
+    $units[] = $row;
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +79,7 @@ $message_type = "";
 
             <a
                 class="navbar-brand fw-bold admin-brand"
-                href="admin-upload.php"
+                href="admin-upload.html"
             >
 
                 <i class="bi bi-shield-lock-fill me-1"></i>
@@ -93,7 +122,7 @@ $message_type = "";
 
                         <a
                             class="nav-link admin-nav-link active"
-                            href="admin-upload.php"
+                            href="admin-upload.html"
                         >
 
                             <i class="bi bi-cloud-upload me-1"></i>
@@ -121,7 +150,7 @@ $message_type = "";
 
 
                     <a
-                        href="login.php"
+                        href="login.html"
                         class="btn btn-admin-logout btn-sm px-3"
                     >
 
@@ -303,41 +332,57 @@ $message_type = "";
 
                                         <!-- Subject & Unit -->
 
-                                        <select
+                                       <select
                                             class="form-select"
                                             name="unit_id"
+                                            id="unitSelect"
                                             required
                                         >
 
-                                            <option
-                                                value=""
-                                                selected
-                                                disabled
-                                            >
+                                            <option value="" selected disabled>
                                                 -- Select Syllabus Unit --
                                             </option>
 
-                                            <option value="1">
-                                                [Grade 12] Science for Tech -
-                                                Unit 01: Physics Fundamentals
-                                            </option>
+                                            <?php foreach ($units as $unit): ?>
 
-                                            <option value="2">
-                                                [Grade 12] Engineering Tech -
-                                                Unit 01: Applied Mechanics
-                                            </option>
+                                                <option
+                                                    value="<?php echo $unit["unit_id"]; ?>"
+                                                    data-grade="<?php echo htmlspecialchars($unit["grade"]); ?>"
+                                                >
 
-                                            <option value="3">
-                                                [Grade 12] ICT -
-                                                Unit 01: Programming Concepts
-                                            </option>
+                                                    <?php echo htmlspecialchars($unit["subject_code"]); ?>
+
+                                                    -
+                                                    
+                                                    Grade <?php echo htmlspecialchars($unit["grade"]); ?>
+
+                                                    -
+                                                    
+                                                    Unit
+                                                    <?php echo str_pad(
+                                                        $unit["unit_number"],
+                                                        2,
+                                                        "0",
+                                                        STR_PAD_LEFT
+                                                    ); ?>
+
+                                                    :
+                                                    
+                                                    <?php echo htmlspecialchars($unit["unit_title"]); ?>
+
+                                                </option>
+
+                                            <?php endforeach; ?>
+
+                                                </select>
+
+                                            
 
                                         </select>
 
                                     </div>
 
                                     
-                            
 
                             </div>
 
@@ -508,6 +553,44 @@ $message_type = "";
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     ></script>
+
+    <script>
+
+    const gradeSelect = document.querySelector('select[name="grade"]');
+    const unitSelect = document.getElementById('unitSelect');
+
+    gradeSelect.addEventListener('change', function () {
+
+        const selectedGrade = this.value;
+
+        const options = unitSelect.querySelectorAll('option');
+
+        unitSelect.value = "";
+
+        options.forEach(function (option) {
+
+            if (option.value === "") {
+                option.style.display = "";
+                return;
+            }
+
+            const unitGrade = option.getAttribute("data-grade");
+
+            if (unitGrade === selectedGrade) {
+
+                option.style.display = "";
+
+            } else {
+
+                option.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+</script>
 
 
 </body>
