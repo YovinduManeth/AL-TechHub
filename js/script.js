@@ -131,7 +131,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-
 // ==========================================
 // Data-Saver Mode
 // ==========================================
@@ -145,18 +144,29 @@ function setupDataSaverMode() {
     const videoPlayer = document.getElementById("videoPlayer");
     const audioPlayer = document.getElementById("audioPlayer");
 
+    const audioSource = audioPlayer
+        ? audioPlayer.querySelector("source")
+        : null;
+
+
     // Stop if this is not the lesson page
     if (
         !toggle ||
         !videoContainer ||
         !audioContainer ||
         !videoPlayer ||
-        !audioPlayer
+        !audioPlayer ||
+        !audioSource
     ) {
         return;
     }
 
+
     toggle.addEventListener("change", function () {
+
+        // ==========================================
+        // DATA-SAVER ON
+        // ==========================================
 
         if (toggle.checked) {
 
@@ -166,10 +176,42 @@ function setupDataSaverMode() {
             // Hide video
             videoContainer.style.display = "none";
 
-            // Show audio
+
+            // Get audio source
+            const audioPath = audioSource.getAttribute("src");
+
+            console.log("Data-Saver audio path:", audioPath);
+
+
+            // Make sure an audio file exists
+            if (!audioPath || audioPath.trim() === "") {
+
+                alert("No audio file is available for this lesson.");
+
+                toggle.checked = false;
+
+                videoContainer.style.display = "block";
+
+                return;
+
+            }
+
+
+            // Reload audio source
+            audioPlayer.load();
+
+
+            // Show audio player
             audioContainer.style.display = "block";
 
-        } else {
+        }
+
+
+        // ==========================================
+        // DATA-SAVER OFF
+        // ==========================================
+
+        else {
 
             // Stop audio
             audioPlayer.pause();
@@ -189,6 +231,7 @@ function setupDataSaverMode() {
 
 // Start Data-Saver Mode
 setupDataSaverMode();
+
 
 
 
