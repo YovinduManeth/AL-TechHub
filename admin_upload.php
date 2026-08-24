@@ -4,6 +4,8 @@ require_once "php/db.php";
 require_once "php/ffmpeg.php";
 
 
+
+
 // ==========================================
 // ONLY ALLOW POST REQUEST
 // ==========================================
@@ -22,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 $resource_type = $_POST["resource_type"] ?? "";
 $unit_id = $_POST["unit_id"] ?? "";
+$lesson_number = trim($_POST["lesson_number"] ?? "");
 $title = trim($_POST["title"] ?? "");
 $description = trim($_POST["description"] ?? "");
 
@@ -43,6 +46,7 @@ if ($resource_type !== "lesson") {
 
 if (
     empty($unit_id) ||
+    empty($lesson_number) ||
     empty($title) ||
     !isset($_FILES["video"])
 ) {
@@ -188,30 +192,6 @@ if (!$audio_result["success"]) {
 
 $duration_minutes = null;
 
-
-// ==========================================
-// GET NEXT LESSON NUMBER
-// ==========================================
-
-$sql = "SELECT COUNT(*) AS lesson_count
-        FROM lessons
-        WHERE unit_id = ?";
-
-$stmt = $conn->prepare($sql);
-
-$stmt->bind_param("i", $unit_id);
-
-$stmt->execute();
-
-$result = $stmt->get_result();
-
-$row = $result->fetch_assoc();
-
-$stmt->close();
-
-
-$lesson_number =
-    "1." . ($row["lesson_count"] + 1);
 
 
 // ==========================================

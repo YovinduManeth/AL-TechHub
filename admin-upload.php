@@ -378,13 +378,41 @@ while ($row = $result->fetch_assoc()) {
 
                                             
 
-                                        </select>
+                                        
 
                                     </div>
 
                                     
 
                             </div>
+
+
+                            <!-- Lesson Number -->
+
+                                <div class="mb-4">
+
+                                    <label class="form-label fw-bold">
+
+                                        <i class="bi bi-list-ol me-1"></i>
+
+                                        Lesson Number
+
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="lesson_number"
+                                        placeholder="e.g. 1.1"
+                                        required
+                                    >
+
+                                    <div class="form-text">
+                                        Enter the lesson number according to the unit.
+                                        Example: 1.1, 1.2, 1.3
+                                    </div>
+
+                                </div>
 
 
 
