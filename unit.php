@@ -464,14 +464,11 @@ $stmt->close();
 
 
                     <a
-                        href="#"
+                        href="short-notes.php?unit=<?php echo $unit_id; ?>"
                         class="btn btn-dashboard fw-bold"
                     >
-
                         <i class="bi bi-file-earmark-text me-1"></i>
-
                         View Notes
-
                     </a>
 
                 </div>
