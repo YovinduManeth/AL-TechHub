@@ -378,7 +378,7 @@ $stmt->close();
 
 
                         <a
-                            href="past-papers.php"
+                            href="past-papers.php?subject=<?php echo $subject["subject_id"]; ?>&grade=12"
                             class="btn btn-outline-primary flex-fill fw-bold"
                         >
 
