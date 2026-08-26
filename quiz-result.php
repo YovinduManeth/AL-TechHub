@@ -1,3 +1,187 @@
+<?php
+
+session_start();
+
+require_once "php/db.php";
+
+
+// ==========================================
+// CHECK LOGIN
+// ==========================================
+
+if (!isset($_SESSION["user_id"])) {
+
+    header("Location: login.html?error=login_required");
+    exit();
+
+}
+
+
+// ==========================================
+// CHECK QUIZ SESSION
+// ==========================================
+
+if (
+    !isset($_SESSION["active_quiz_id"]) ||
+    !isset($_SESSION["quiz_questions"])
+) {
+
+    header("Location: dashboard.php");
+    exit();
+
+}
+
+
+$quiz_id = (int)$_SESSION["active_quiz_id"];
+
+$selected_question_ids = $_SESSION["quiz_questions"];
+
+
+// ==========================================
+// GET QUIZ DETAILS
+// ==========================================
+
+$sql = "SELECT
+            quiz_id,
+            unit_id,
+            title,
+            time_limit
+        FROM quizzes
+        WHERE quiz_id = ?";
+
+$stmt = $conn->prepare($sql);
+
+$stmt->bind_param("i", $quiz_id);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+$quiz = $result->fetch_assoc();
+
+$stmt->close();
+
+
+if (!$quiz) {
+
+    header("Location: dashboard.php");
+    exit();
+
+}
+
+
+// ==========================================
+// GET SELECTED QUESTIONS
+// ==========================================
+
+$questions = [];
+
+foreach ($selected_question_ids as $question_id) {
+
+    $sql = "SELECT
+                question_id,
+                question_text,
+                option_a,
+                option_b,
+                option_c,
+                option_d,
+                correct_answer
+            FROM quiz_questions
+            WHERE question_id = ?
+            AND quiz_id = ?";
+
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bind_param(
+        "ii",
+        $question_id,
+        $quiz_id
+    );
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $question = $result->fetch_assoc();
+
+    if ($question) {
+
+        $questions[] = $question;
+
+    }
+
+    $stmt->close();
+
+}
+
+
+// ==========================================
+// CALCULATE SCORE
+// ==========================================
+
+$correct_count = 0;
+
+$total_questions = count($questions);
+
+$marks_per_question = 10;
+
+
+foreach ($questions as $question) {
+
+    $question_id = $question["question_id"];
+
+    $submitted_answer =
+        $_POST["question_" . $question_id] ?? "";
+
+    $correct_answer =
+        $question["correct_answer"];
+
+
+    if ($submitted_answer === $correct_answer) {
+
+        $correct_count++;
+
+    }
+
+}
+
+
+// ==========================================
+// CALCULATE MARKS
+// ==========================================
+
+$score =
+    $correct_count * $marks_per_question;
+
+$total_marks =
+    $total_questions * $marks_per_question;
+
+
+// ==========================================
+// CALCULATE PERCENTAGE
+// ==========================================
+
+$percentage = 0;
+
+if ($total_marks > 0) {
+
+    $percentage =
+        ($score / $total_marks) * 100;
+
+}
+
+
+// ==========================================
+// PASS / FAIL
+// ==========================================
+
+$pass_mark = 50;
+
+$passed =
+    ($percentage >= $pass_mark);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -237,7 +421,10 @@
                     <p class="result-description">
                         Unit 01: Fundamentals of Physics & Measurement
                         <span class="d-block mt-1">
-                            8 out of 10 questions answered correctly
+                            <?php echo $correct_count; ?>
+                                out of
+                                <?php echo $total_questions; ?>
+                                questions answered correctly
                         </span>
                     </p>
 
@@ -253,12 +440,31 @@
 
 
                        <div class="result-score">
-                                80%
-                            </div>
+
+                            <?php echo $score; ?>
+
+                            / 
+
+                            <?php echo $total_marks; ?>
+
+                        </div>
 
                             <span class="result-status">
-                                <i class="bi bi-check-circle-fill me-1"></i>
-                                Passed
+
+                                <?php if ($passed): ?>
+
+                                    <i class="bi bi-check-circle-fill me-1"></i>
+
+                                    Passed
+
+                                <?php else: ?>
+
+                                    <i class="bi bi-x-circle-fill me-1"></i>
+
+                                    Failed
+
+                                <?php endif; ?>
+
                             </span>
                     </div>
 
