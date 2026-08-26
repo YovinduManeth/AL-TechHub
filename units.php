@@ -29,6 +29,7 @@ $full_name = $_SESSION["full_name"];
 // ==========================================
 
 $subject_code = $_GET["subject"] ?? "";
+$grade = $_GET["grade"] ?? "12";
 
 
 // ==========================================
@@ -78,11 +79,12 @@ $sql = "SELECT
             unit_title
         FROM units
         WHERE subject_id = ?
-        ORDER BY grade, unit_number";
+        AND grade = ?
+        ORDER BY unit_number";
 
 $stmt = $conn->prepare($sql);
 
-$stmt->bind_param("i", $subject_id);
+$stmt->bind_param("is", $subject_id, $grade);
 
 $stmt->execute();
 

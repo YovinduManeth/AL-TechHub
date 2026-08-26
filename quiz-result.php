@@ -4,6 +4,23 @@ session_start();
 
 require_once "php/db.php";
 
+// ==========================================
+// CHECK IF VIEWING SAVED RESULT
+// ==========================================
+
+$attempt_id = $_GET["attempt"] ?? "";
+
+if ($attempt_id !== "") {
+
+    if (!is_numeric($attempt_id)) {
+        header("Location: dashboard.php");
+        exit();
+    }
+
+    $attempt_id = (int)$attempt_id;
+
+}
+
 
 // ==========================================
 // CHECK LOGIN
@@ -16,25 +33,139 @@ if (!isset($_SESSION["user_id"])) {
 
 }
 
+// ==========================================
+// LOAD SAVED QUIZ ATTEMPT
+// ==========================================
+
+if ($attempt_id !== "") {
+
+    $user_id = (int)$_SESSION["user_id"];
+
+    $sql = "SELECT
+                attempt_id,
+                user_id,
+                quiz_id,
+                score,
+                total_marks,
+                percentage,
+                correct_count
+            FROM quiz_attempts
+            WHERE attempt_id = ?
+            AND user_id = ?";
+
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bind_param(
+        "ii",
+        $attempt_id,
+        $user_id
+    );
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $attempt = $result->fetch_assoc();
+
+    $stmt->close();
+
+
+    if (!$attempt) {
+
+        header("Location: dashboard.php");
+        exit();
+
+    }
+    $quiz_id = (int)$attempt["quiz_id"];
+
+$score = (int)$attempt["score"];
+
+$total_marks = (int)$attempt["total_marks"];
+
+$percentage = (float)$attempt["percentage"];
+
+$correct_count = (int)$attempt["correct_count"];
+
+$total_questions = 10;
+
+$pass_mark = 50;
+
+$passed = ($percentage >= $pass_mark);
+
+$wrong_answers = [];
+
+// ==========================================
+// GET WRONG ANSWERS
+// ==========================================
+
+$sql = "SELECT
+            a.question_id,
+            ROW_NUMBER() OVER (ORDER BY a.question_id) AS question_number,
+            a.selected_answer,
+            a.correct_answer,
+            q.question_text,
+            q.option_a,
+            q.option_b,
+            q.option_c,
+            q.option_d
+        FROM quiz_attempt_answers a
+        INNER JOIN quiz_questions q
+            ON a.question_id = q.question_id
+        WHERE a.attempt_id = ?
+        AND a.selected_answer <> a.correct_answer
+        ORDER BY a.question_id";
+
+$stmt = $conn->prepare($sql);
+
+$stmt->bind_param(
+    "i",
+    $attempt_id
+);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+while ($row = $result->fetch_assoc()) {
+
+    $wrong_answers[] = $row;
+
+}
+
+$stmt->close();
+
+}
+
 
 // ==========================================
 // CHECK QUIZ SESSION
 // ==========================================
 
-if (
-    !isset($_SESSION["active_quiz_id"]) ||
-    !isset($_SESSION["quiz_questions"])
-) {
+if ($attempt_id === "") {
 
-    header("Location: dashboard.php");
-    exit();
+    if (
+        !isset($_SESSION["active_quiz_id"]) ||
+        !isset($_SESSION["quiz_questions"])
+    ) {
+
+        header("Location: dashboard.php");
+        exit();
+
+    }
 
 }
 
 
-$quiz_id = (int)$_SESSION["active_quiz_id"];
+if ($attempt_id === "") {
 
-$selected_question_ids = $_SESSION["quiz_questions"];
+    $quiz_id = (int)$_SESSION["active_quiz_id"];
+
+    $selected_question_ids =
+        $_SESSION["quiz_questions"];
+
+}
+
+if ($attempt_id === "") {
 
 
 // ==========================================
@@ -126,7 +257,9 @@ $total_questions = count($questions);
 $marks_per_question = 10;
 
 
-foreach ($questions as $question) {
+
+
+foreach ($questions as $index => $question) {
 
     $question_id = $question["question_id"];
 
@@ -140,6 +273,36 @@ foreach ($questions as $question) {
     if ($submitted_answer === $correct_answer) {
 
         $correct_count++;
+
+    } else {
+
+        $wrong_answers[] = [
+
+            "question_number" =>
+                $index + 1,
+
+            "question_text" =>
+                $question["question_text"],
+
+            "your_answer" =>
+                $submitted_answer,
+
+            "correct_answer" =>
+                $correct_answer,
+
+            "option_a" =>
+                $question["option_a"],
+
+            "option_b" =>
+                $question["option_b"],
+
+            "option_c" =>
+                $question["option_c"],
+
+            "option_d" =>
+                $question["option_d"]
+
+        ];
 
     }
 
@@ -179,6 +342,90 @@ $pass_mark = 50;
 
 $passed =
     ($percentage >= $pass_mark);
+
+
+// ==========================================
+// SAVE QUIZ ATTEMPT
+// ==========================================
+
+$user_id = (int)$_SESSION["user_id"];
+
+$sql = "INSERT INTO quiz_attempts
+        (
+            user_id,
+            quiz_id,
+            score,
+            total_marks,
+            percentage,
+            correct_count
+        )
+        VALUES (?, ?, ?, ?, ?, ?)";
+
+$stmt = $conn->prepare($sql);
+
+$stmt->bind_param(
+    "iiiidi",
+    $user_id,
+    $quiz_id,
+    $score,
+    $total_marks,
+    $percentage,
+    $correct_count
+);
+
+$stmt->execute();
+
+$attempt_id = $conn->insert_id;
+
+$stmt->close();
+
+// ==========================================
+// SAVE INDIVIDUAL ANSWERS
+// ==========================================
+
+$sql = "INSERT INTO quiz_attempt_answers
+        (
+            attempt_id,
+            question_id,
+            selected_answer,
+            correct_answer
+        )
+        VALUES (?, ?, ?, ?)";
+
+$stmt = $conn->prepare($sql);
+
+foreach ($questions as $question) {
+
+    $question_id = (int)$question["question_id"];
+
+    $selected_answer =
+        $_POST["question_" . $question_id] ?? "";
+
+    $correct_answer =
+        $question["correct_answer"];
+
+    $stmt->bind_param(
+        "iiss",
+        $attempt_id,
+        $question_id,
+        $selected_answer,
+        $correct_answer
+    );
+
+    $stmt->execute();
+}
+
+$stmt->close();
+
+
+// ==========================================
+// REDIRECT AFTER SAVING ATTEMPT
+// ==========================================
+
+header("Location: quiz-result.php?attempt=" . $attempt_id);
+exit();
+
+}
 
 ?>
 
@@ -476,7 +723,7 @@ $passed =
 
 
                         <a
-                            href="units.html"
+                            href="units.php"
                             class="btn-result-primary"
                         >
 
@@ -488,7 +735,7 @@ $passed =
 
 
                         <a
-                            href="quiz.html"
+                            href="quiz.php?quiz=<?php echo $quiz_id; ?>"
                             class="btn-result-outline"
                         >
 
@@ -533,90 +780,152 @@ $passed =
 
                     </div>
 
+                    <?php if (count($wrong_answers) > 0): ?>
+
+    <?php foreach ($wrong_answers as $wrong): ?>
+
+        <div class="answer-item incorrect-answer">
+
+            <div class="answer-item-top">
+
+                <span class="answer-question-number">
+
+                    Question
+                    <?php echo str_pad(
+                        $wrong["question_number"],
+                        2,
+                        "0",
+                        STR_PAD_LEFT
+                    ); ?>
+
+                </span>
+
+                <span class="answer-correct">
+
+                    <i class="bi bi-x-circle-fill me-1"></i>
+
+                    Incorrect
+
+                </span>
+
+            </div>
 
 
-                    <!-- Question 01 -->
+            <p class="answer-question">
 
-                    <div class="answer-item correct-answer">
+                <?php echo htmlspecialchars(
+                    $wrong["question_text"]
+                ); ?>
 
-                        <div class="answer-item-top">
-
-                            <span class="answer-question-number">
-                                Question 01
-                            </span>
-
-                            <span class="answer-correct">
-
-                                <i class="bi bi-check-circle-fill me-1"></i>
-
-                                Correct
-
-                            </span>
-
-                        </div>
+            </p>
 
 
-                        <p class="answer-question">
+            <!-- Your Answer -->
 
-                            Which of the following is a fundamental
-                            base unit?
+            <div class="answer-choice">
 
-                        </p>
+                <i class="bi bi-x-circle-fill"></i>
 
+                <span>
 
-                        <div class="answer-choice">
+                    Your Answer:
 
-                            <i class="bi bi-check-circle-fill"></i>
+                    <?php
 
-                            <span>
-                                B) Ampere (A)
-                            </span>
+                    $your_answer = $wrong["selected_answer"];
 
-                        </div>
+                        if ($your_answer === "") {
 
-                    </div>
+                            echo "Not Answered";
 
+                        } else {
 
+                            $your_option =
+                                $wrong[
+                                    "option_" .
+                                    strtolower($your_answer)
+                                ];
 
-                    <!-- Question 02 -->
+                            echo htmlspecialchars($your_answer);
 
-                    <div class="answer-item correct-answer">
+                            echo ") ";
 
-                        <div class="answer-item-top">
+                            echo htmlspecialchars($your_option);
 
-                            <span class="answer-question-number">
-                                Question 02
-                            </span>
+                        }
 
-                            <span class="answer-correct">
+                    ?>
 
-                                <i class="bi bi-check-circle-fill me-1"></i>
+                </span>
 
-                                Correct
-
-                            </span>
-
-                        </div>
+            </div>
 
 
-                        <p class="answer-question">
+            <!-- Correct Answer -->
 
-                            What is the dimensional formula for force?
+            <div class="answer-choice">
 
-                        </p>
+                <i class="bi bi-check-circle-fill"></i>
+
+                <span>
+
+                    Correct Answer:
+
+                    <?php
+
+                    $correct_answer =
+                        $wrong["correct_answer"];
+
+                    $correct_option =
+                        $wrong[
+                            "option_" .
+                            strtolower($correct_answer)
+                        ];
+
+                    echo htmlspecialchars(
+                        $correct_answer
+                    );
+
+                    echo ") ";
+
+                    echo htmlspecialchars(
+                        $correct_option
+                    );
+
+                    ?>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    <?php endforeach; ?>
+
+<?php else: ?>
+
+    <div class="text-center py-4">
+
+        <i class="bi bi-check-circle-fill fs-1 text-success"></i>
+
+        <h5 class="mt-3">
+
+            Perfect Score!
+
+        </h5>
+
+        <p class="text-muted">
+
+            You answered all questions correctly.
+
+        </p>
+
+    </div>
+
+<?php endif; ?>
 
 
-                        <div class="answer-choice">
 
-                            <i class="bi bi-check-circle-fill"></i>
-
-                            <span>
-                                A) [M L T⁻²]
-                            </span>
-
-                        </div>
-
-                    </div>
 
 
                 </div>

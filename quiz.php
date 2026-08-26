@@ -422,50 +422,54 @@ $_SESSION["active_quiz_id"] = $quiz_id;
 
     <script>
 
-        let secondsLeft = <?php echo (int)$quiz["time_limit"]; ?> * 60;
+    let secondsLeft = <?php echo (int)$quiz["time_limit"]; ?> * 60;
 
-        const timerElem =
-            document.getElementById("quizTimer");
+    const timerElem =
+        document.getElementById("quizTimer");
 
-
-        const timer = setInterval(function () {
-
-            let mins =
-                Math.floor(secondsLeft / 60);
-
-            let secs =
-                secondsLeft % 60;
+    const quizForm =
+        document.querySelector("form");
 
 
-            secs =
-                secs < 10
-                ? "0" + secs
-                : secs;
+    const timer = setInterval(function () {
+
+        let mins =
+            Math.floor(secondsLeft / 60);
+
+        let secs =
+            secondsLeft % 60;
 
 
-            timerElem.innerText =
-                `${mins}:${secs}`;
+        secs =
+            secs < 10
+            ? "0" + secs
+            : secs;
 
 
-            if (secondsLeft <= 0) {
-
-                clearInterval(timer);
-
-                timerElem.innerText = "00:00";
-
-            }
+        timerElem.innerText =
+            `${mins}:${secs}`;
 
 
-            if (secondsLeft > 0) {
+        if (secondsLeft <= 0) {
 
-                secondsLeft--;
+            clearInterval(timer);
 
-            }
+            timerElem.innerText = "00:00";
 
-        }, 1000);
+            quizForm.submit();
 
-    </script>
+        }
 
+
+        if (secondsLeft > 0) {
+
+            secondsLeft--;
+
+        }
+
+    }, 1000);
+
+</script>
 
 </body>
 

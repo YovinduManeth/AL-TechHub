@@ -61,6 +61,43 @@ while ($row = $result->fetch_assoc()) {
 
 $stmt->close();
 
+// ==========================================
+// GET QUIZ HISTORY
+// ==========================================
+
+$sql = "SELECT
+            quiz_attempts.attempt_id,
+            quiz_attempts.quiz_id,
+            quiz_attempts.score,
+            quiz_attempts.total_marks,
+            quiz_attempts.percentage,
+            quiz_attempts.correct_count,
+            quiz_attempts.attempted_at,
+            quizzes.title
+        FROM quiz_attempts
+        INNER JOIN quizzes
+            ON quiz_attempts.quiz_id = quizzes.quiz_id
+        WHERE quiz_attempts.user_id = ?
+        ORDER BY quiz_attempts.attempted_at ASC";
+
+$stmt = $conn->prepare($sql);
+
+$stmt->bind_param("i", $user_id);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+$quiz_history = [];
+
+while ($row = $result->fetch_assoc()) {
+
+    $quiz_history[] = $row;
+
+}
+
+$stmt->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -365,8 +402,9 @@ $stmt->close();
                     <!-- Buttons -->
                     <div class="d-flex gap-2">
 
-                        <a
-                            href="units.php?subject=<?php echo urlencode($subject["subject_code"]); ?>"
+                        <a  
+                            id="unitsLink-<?php echo $subject["subject_id"]; ?>"
+                            href="units.php?subject=<?php echo urlencode($subject["subject_code"]); ?>&grade=12"
                             class="btn btn-dashboard flex-fill fw-bold"
                         >
 
@@ -377,7 +415,8 @@ $stmt->close();
                         </a>
 
 
-                        <a
+                        <a  
+                            id="pastPapersLink-<?php echo $subject["subject_id"]; ?>"
                             href="past-papers.php?subject=<?php echo $subject["subject_id"]; ?>&grade=12"
                             class="btn btn-outline-primary flex-fill fw-bold"
                         >
@@ -400,8 +439,241 @@ $stmt->close();
 
 <?php endforeach; ?>
 
+<!-- ==============================
+     QUIZ PROGRESS
+=============================== -->
+
+<div class="mb-3">
+
+    <h5 class="fw-bold mb-1">
+        Quiz Progress
+    </h5>
+
+    <p class="text-muted small mb-0">
+        Review your recent quiz attempts and scores.
+    </p>
+
+</div>
+
+
+<div class="card rounded-4 shadow-sm border-0 mb-5">
+
+    <div class="card-body p-4">
+
+        <?php if (count($quiz_history) > 0): ?>
+
+            <div class="table-responsive">
+
+                <table class="table align-middle mb-0">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Quiz</th>
+
+                            <th>Score</th>
+
+                            <th>Percentage</th>
+
+                            <th>Status</th>
+
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <?php foreach ($quiz_history as $attempt): ?>
+
+                            <tr>
+
+                                <td class="fw-semibold">
+
+                                    <?php echo htmlspecialchars(
+                                        $attempt["title"]
+                                    ); ?>
+
+                                </td>
+
+
+                                <td>
+
+                                    <?php echo $attempt["score"]; ?>
+
+                                    /
+
+                                    <?php echo $attempt["total_marks"]; ?>
+
+                                </td>
+
+
+                                <td>
+
+                                    <?php echo number_format(
+                                        $attempt["percentage"],
+                                        0
+                                    ); ?>%
+
+                                </td>
+
+
+                                <td>
+
+                                    <?php if ($attempt["percentage"] >= 50): ?>
+
+                                        <span class="badge bg-success">
+
+                                            Passed
+
+                                        </span>
+
+                                    <?php else: ?>
+
+                                        <span class="badge bg-danger">
+
+                                            Failed
+
+                                        </span>
+
+                                    <?php endif; ?>
+
+                                </td>
+
+
+                                <td class="text-muted small">
+
+                                    <?php echo date(
+                                        "d M Y, h:i A",
+                                        strtotime(
+                                            $attempt["attempted_at"]
+                                        )
+                                    ); ?>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        <?php else: ?>
+
+            <div class="text-center py-4">
+
+                <i class="bi bi-clipboard2-x fs-1 text-muted"></i>
+
+                <h6 class="mt-3">
+
+                    No Quiz Attempts Yet
+
+                </h6>
+
+                <p class="text-muted small mb-0">
+
+                    Complete a quiz to see your results here.
+
+                </p>
+
+            </div>
+
+        <?php endif; ?>
+
+    </div>
+
+</div>
+
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+    const grade12 = document.getElementById("grade12");
+    const grade13 = document.getElementById("grade13");
+
+    const unitsLinks =
+        document.querySelectorAll('[id^="unitsLink-"]');
+
+    const pastPaperLinks =
+        document.querySelectorAll('[id^="pastPapersLink-"]');
+
+
+    function updateGradeLinks() {
+
+        let selectedGrade;
+
+        if (grade13.checked) {
+
+            selectedGrade = "13";
+
+        } else {
+
+            selectedGrade = "12";
+
+        }
+
+
+        // Update View Units links
+
+        unitsLinks.forEach(function (link) {
+
+            const url =
+                new URL(link.href);
+
+            url.searchParams.set(
+                "grade",
+                selectedGrade
+            );
+
+            link.href = url.toString();
+
+        });
+
+
+        // Update Past Papers links
+
+        pastPaperLinks.forEach(function (link) {
+
+            const url =
+                new URL(link.href);
+
+            url.searchParams.set(
+                "grade",
+                selectedGrade
+            );
+
+            link.href = url.toString();
+
+        });
+
+    }
+
+
+    grade12.addEventListener(
+        "change",
+        updateGradeLinks
+    );
+
+
+    grade13.addEventListener(
+        "change",
+        updateGradeLinks
+    );
+
+
+    // Set initial grade
+
+    updateGradeLinks();
+
+</script>
 
 </body>
 
