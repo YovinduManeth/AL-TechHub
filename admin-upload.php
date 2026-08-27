@@ -238,6 +238,7 @@ while ($row = $result->fetch_assoc()) {
                             action="admin_upload.php"
                             method="POST"
                             enctype="multipart/form-data"
+                            onsubmit="alert('TITLE VALUE: [' + document.getElementById('lessonTitle').value + ']');"
                         >
 
 
@@ -433,7 +434,7 @@ while ($row = $result->fetch_assoc()) {
                                     <input
                                         type="text"
                                         class="form-control"
-                                        name="title"
+                                        name="lesson_title"
                                         id="lessonTitle"
                                         placeholder="e.g. SI Units & Measurement"
                                     >

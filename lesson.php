@@ -48,12 +48,16 @@ $lesson_id = (int)$lesson_id;
 // ==========================================
 
 $sql = "SELECT
-            lessons.lesson_id,
+            $lesson_id,
             lessons.unit_id,
             lessons.lesson_number,
             lessons.title,
             lessons.description,
             lessons.video_path,
+            lessons.video_1080p_path,
+            lessons.video_720p_path,
+            lessons.video_480p_path,
+            lessons.video_360p_path,
             lessons.audio_path,
             lessons.duration_minutes,
 
@@ -311,11 +315,11 @@ if (!$lesson) {
                                 aria-label="Select video quality"
                             >
 
-                                <option value="1080p">
+                                <option value="1080p"selected>
                                     1080p
                                 </option>
 
-                                <option value="720p" selected>
+                                <option value="720p">
                                     720p
                                 </option>
 
@@ -345,13 +349,8 @@ if (!$lesson) {
                         <video
                             id="videoPlayer"
                             controls
+                            src="<?php echo htmlspecialchars($lesson["video_720p_path"] ?? ""); ?>"
                         >
-
-                            <source
-                                id="videoSource"
-                                src="<?php echo htmlspecialchars($lesson["video_path"] ?? ""); ?>"
-                                type="video/mp4"
-                            >
 
                             Your browser does not support
                             video streaming.
@@ -628,6 +627,155 @@ if (!$lesson) {
         </div>
 
     </main>
+
+    <script>
+
+const videoPlayer =
+    document.getElementById("videoPlayer");
+
+
+const videoQuality =
+    document.getElementById("videoQuality");
+
+
+// ==========================================
+// VIDEO QUALITY PATHS
+// ==========================================
+
+const videoQualities = {
+
+    "1080p":
+        "<?php echo htmlspecialchars($lesson["video_1080p_path"] ?? ""); ?>",
+
+    "720p":
+        "<?php echo htmlspecialchars($lesson["video_720p_path"] ?? ""); ?>",
+
+    "480p":
+        "<?php echo htmlspecialchars($lesson["video_480p_path"] ?? ""); ?>",
+
+    "360p":
+        "<?php echo htmlspecialchars($lesson["video_360p_path"] ?? ""); ?>"
+
+};
+
+
+// ==========================================
+// CHANGE VIDEO QUALITY
+// ==========================================
+
+videoQuality.addEventListener(
+    "change",
+    function () {
+
+        const selectedQuality =
+            this.value;
+
+        const newVideoPath =
+            videoQualities[selectedQuality];
+
+
+        console.log(
+            "Selected quality:",
+            selectedQuality
+        );
+
+        console.log(
+            "Video path:",
+            newVideoPath
+        );
+
+
+        // Check whether video path exists
+
+        if (!newVideoPath) {
+
+            alert(
+                "The " +
+                selectedQuality +
+                " video is not available."
+            );
+
+            return;
+
+        }
+
+
+        // Remember current position
+
+        const currentTime =
+            videoPlayer.currentTime;
+
+
+        const wasPlaying =
+            !videoPlayer.paused;
+
+        // Change video source directly
+
+            videoPlayer.src =
+                newVideoPath;
+
+
+            // Reload video
+
+            videoPlayer.load();
+        
+
+
+        // Restore playback position
+
+        videoPlayer.addEventListener(
+            "loadedmetadata",
+            function restorePosition() {
+
+                videoPlayer.currentTime =
+                    currentTime;
+
+
+                if (wasPlaying) {
+
+                    videoPlayer.play().catch(
+                        function (error) {
+
+                            console.log(
+                                "Playback error:",
+                                error
+                            );
+
+                        }
+                    );
+
+                }
+
+
+                videoPlayer.removeEventListener(
+                    "loadedmetadata",
+                    restorePosition
+                );
+
+            }
+        );
+
+    }
+);
+
+
+// ==========================================
+// VIDEO ERROR CHECK
+// ==========================================
+
+videoPlayer.addEventListener(
+    "error",
+    function () {
+
+        console.log(
+            "Video error:",
+            videoPlayer.error
+        );
+
+    }
+);
+
+</script>
 
 <script src="js/script.js"></script>
 

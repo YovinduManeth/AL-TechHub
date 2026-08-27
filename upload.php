@@ -1,5 +1,6 @@
 <?php
 
+
 require_once "php/db.php";
 require_once "php/ffmpeg.php";
 
@@ -26,10 +27,9 @@ $unit_id = $_POST["unit_id"] ?? "";
 
 $lesson_number = trim($_POST["lesson_number"] ?? "");
 
-$title = trim($_POST["lesson_title"] ?? "");
+$title = trim($_POST["title"] ?? "");
 
 $description = trim($_POST["description"] ?? "");
-
 
 
 // ==========================================
@@ -329,10 +329,12 @@ if ($resource_type === "short_notes") {
     // CHECK REQUIRED DATA
     // ==========================================
 
-    if (
-        empty($title) ||
-        !isset($_FILES["note_file"])
-    ) {
+    $note_title = trim($_POST["note_title"] ?? "");
+
+if (
+    empty($note_title) ||
+    !isset($_FILES["note_file"])
+) {
 
         die(
             "Please enter the note title " .
@@ -451,11 +453,11 @@ if ($resource_type === "short_notes") {
 
 
     $stmt->bind_param(
-        "iss",
-        $unit_id,
-        $title,
-        $note_path
-    );
+    "iss",
+    $unit_id,
+    $note_title,
+    $note_path
+);
 
 
     // ==========================================
@@ -499,7 +501,7 @@ if ($resource_type === "short_notes") {
 
 
     echo "<p>Title: " .
-         htmlspecialchars($title) .
+         htmlspecialchars($note_title) .
          "</p>";
 
 
@@ -535,9 +537,31 @@ if (
     !isset($_FILES["video"])
 ) {
 
-    die(
-        "Please complete all required lesson fields."
-    );
+    echo "<h2>Debug Information</h2>";
+
+    echo "<pre>";
+
+    echo "Resource Type: ";
+    var_dump($resource_type);
+
+    echo "\nUnit ID: ";
+    var_dump($unit_id);
+
+    echo "\nLesson Number: ";
+    var_dump($lesson_number);
+
+    echo "\nTitle: ";
+    var_dump($title);
+
+    echo "\nDescription: ";
+    var_dump($description);
+
+    echo "\nFILES:\n";
+    var_dump($_FILES);
+
+    echo "</pre>";
+
+    exit();
 
 }
 
@@ -596,18 +620,12 @@ $unique_name =
 // UPLOAD DIRECTORIES
 // ==========================================
 
-$video_directory =
-    "uploads/videos/";
+$video_directory = "uploads/videos/";
+$video_quality_directory = "uploads/videos/quality/";
+$audio_directory = "uploads/audios/";
 
-$video_quality_directory =
-    "uploads/videos/quality/";
 
-$audio_directory =
-    "uploads/audios/";
-
-// ==========================================
-// CREATE DIRECTORIES
-// ==========================================
+// Create directories if they don't exist
 
 if (!is_dir($video_directory)) {
 
@@ -640,8 +658,6 @@ if (!is_dir($audio_directory)) {
 }
 
 
-
-
 // ==========================================
 // FILE PATHS
 // ==========================================
@@ -665,41 +681,6 @@ $audio_path =
 
 
 // ==========================================
-// VIDEO QUALITY FILE PATHS
-// ==========================================
-
-$video_filename =
-    pathinfo(
-        $unique_name,
-        PATHINFO_FILENAME
-    );
-
-
-$video_1080p_path =
-    $video_quality_directory .
-    $video_filename .
-    "_1080p.mp4";
-
-
-$video_720p_path =
-    $video_quality_directory .
-    $video_filename .
-    "_720p.mp4";
-
-
-$video_480p_path =
-    $video_quality_directory .
-    $video_filename .
-    "_480p.mp4";
-
-
-$video_360p_path =
-    $video_quality_directory .
-    $video_filename .
-    "_360p.mp4";
-
-
-// ==========================================
 // MOVE UPLOADED VIDEO
 // ==========================================
 
@@ -720,7 +701,49 @@ if (
 // GENERATE VIDEO QUALITY VERSIONS
 // ==========================================
 
+$base_name =
+    pathinfo(
+        $unique_name,
+        PATHINFO_FILENAME
+    );
+
+
 // 1080p
+
+$video_1080p_path =
+    $video_quality_directory .
+    $base_name .
+    "_1080p.mp4";
+
+
+// 720p
+
+$video_720p_path =
+    $video_quality_directory .
+    $base_name .
+    "_720p.mp4";
+
+
+// 480p
+
+$video_480p_path =
+    $video_quality_directory .
+    $base_name .
+    "_480p.mp4";
+
+
+// 360p
+
+$video_360p_path =
+    $video_quality_directory .
+    $base_name .
+    "_360p.mp4";
+
+
+// ==========================================
+// GENERATE 1080p
+// ==========================================
+
 $result_1080p =
     generateVideoQuality(
         $video_path,
@@ -730,21 +753,15 @@ $result_1080p =
 
 if (!$result_1080p["success"]) {
 
-    die(
-        "1080p video generation failed.<br><pre>" .
-        htmlspecialchars(
-            implode(
-                "\n",
-                $result_1080p["output"] ?? []
-            )
-        ) .
-        "</pre>"
-    );
+    die("1080p video generation failed.");
 
 }
 
 
-// 720p
+// ==========================================
+// GENERATE 720p
+// ==========================================
+
 $result_720p =
     generateVideoQuality(
         $video_path,
@@ -754,21 +771,15 @@ $result_720p =
 
 if (!$result_720p["success"]) {
 
-    die(
-        "720p video generation failed.<br><pre>" .
-        htmlspecialchars(
-            implode(
-                "\n",
-                $result_720p["output"] ?? []
-            )
-        ) .
-        "</pre>"
-    );
+    die("720p video generation failed.");
 
 }
 
 
-// 480p
+// ==========================================
+// GENERATE 480p
+// ==========================================
+
 $result_480p =
     generateVideoQuality(
         $video_path,
@@ -778,21 +789,15 @@ $result_480p =
 
 if (!$result_480p["success"]) {
 
-    die(
-        "480p video generation failed.<br><pre>" .
-        htmlspecialchars(
-            implode(
-                "\n",
-                $result_480p["output"] ?? []
-            )
-        ) .
-        "</pre>"
-    );
+    die("480p video generation failed.");
 
 }
 
 
-// 360p
+// ==========================================
+// GENERATE 360p
+// ==========================================
+
 $result_360p =
     generateVideoQuality(
         $video_path,
@@ -802,16 +807,7 @@ $result_360p =
 
 if (!$result_360p["success"]) {
 
-    die(
-        "360p video generation failed.<br><pre>" .
-        htmlspecialchars(
-            implode(
-                "\n",
-                $result_360p["output"] ?? []
-            )
-        ) .
-        "</pre>"
-    );
+    die("360p video generation failed.");
 
 }
 
@@ -910,35 +906,31 @@ $stmt->bind_param(
 
 if (!$stmt->execute()) {
 
-    // Remove original video
+
     if (file_exists($video_path)) {
-        unlink($video_path);
-    }
+    unlink($video_path);
+}
 
-    // Remove audio
-    if (file_exists($audio_path)) {
-        unlink($audio_path);
-    }
+if (file_exists($video_1080p_path)) {
+    unlink($video_1080p_path);
+}
 
-    // Remove 1080p video
-    if (file_exists($video_1080p_path)) {
-        unlink($video_1080p_path);
-    }
+if (file_exists($video_720p_path)) {
+    unlink($video_720p_path);
+}
 
-    // Remove 720p video
-    if (file_exists($video_720p_path)) {
-        unlink($video_720p_path);
-    }
+if (file_exists($video_480p_path)) {
+    unlink($video_480p_path);
+}
 
-    // Remove 480p video
-    if (file_exists($video_480p_path)) {
-        unlink($video_480p_path);
-    }
+if (file_exists($video_360p_path)) {
+    unlink($video_360p_path);
+}
 
-    // Remove 360p video
-    if (file_exists($video_360p_path)) {
-        unlink($video_360p_path);
-    }
+if (file_exists($audio_path)) {
+    unlink($audio_path);
+}
+
 
     die(
         "Database error: " .
