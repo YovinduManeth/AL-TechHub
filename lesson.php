@@ -379,18 +379,13 @@ if (!$lesson) {
 
 
                         <h5 class="fw-bold mb-1">
-
-                            Low-Bitrate Audio Stream Active
-
+                            Data-Saver Mode Active
                         </h5>
 
-
                         <p class="audio-description">
-
                             64 kbps Mono
                             <span>•</span>
-                            Estimated Data Rate: ~28 MB/hour
-
+                            Reduced Data Usage
                         </p>
 
 
