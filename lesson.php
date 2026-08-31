@@ -3,6 +3,7 @@
 session_start();
 
 require_once "php/db.php";
+require_once "php/remember_login.php";
 
 
 // ==========================================
@@ -48,7 +49,7 @@ $lesson_id = (int)$lesson_id;
 // ==========================================
 
 $sql = "SELECT
-            $lesson_id,
+            lessons.lesson_id,
             lessons.unit_id,
             lessons.lesson_number,
             lessons.title,
@@ -346,10 +347,11 @@ if (!$lesson) {
                         class="lesson-video-container"
                     >
 
-                        <video
+                       <video
                             id="videoPlayer"
                             controls
-                            src="<?php echo htmlspecialchars($lesson["video_720p_path"] ?? ""); ?>"
+                            class="w-100"
+                            src="<?php echo htmlspecialchars($lesson["video_path"]); ?>"
                         >
 
                             Your browser does not support
@@ -624,6 +626,10 @@ if (!$lesson) {
     </main>
 
     <script>
+        const currentLessonId = <?php echo $lesson["lesson_id"]; ?>;
+    </script>
+
+    <script>
 
 const videoPlayer =
     document.getElementById("videoPlayer");
@@ -766,6 +772,58 @@ videoPlayer.addEventListener(
             "Video error:",
             videoPlayer.error
         );
+
+    }
+);
+
+// ==========================================
+// MARK LESSON AS COMPLETED
+// ==========================================
+
+// ==========================================
+// MARK LESSON AS COMPLETED - TEST
+// ==========================================
+
+videoPlayer.addEventListener(
+    "ended",
+    function () {
+
+        console.log("VIDEO ENDED!");
+        console.log("Lesson ID:", currentLessonId);
+
+        fetch("php/complete_lesson.php", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+
+            body:
+                "lesson_id=" +
+                encodeURIComponent(currentLessonId)
+
+        })
+
+        .then(function (response) {
+
+            console.log("HTTP Status:", response.status);
+
+            return response.text();
+
+        })
+
+        .then(function (data) {
+
+            console.log("Server Response:", data);
+
+        })
+
+        .catch(function (error) {
+
+            console.error("FETCH ERROR:", error);
+
+        });
 
     }
 );

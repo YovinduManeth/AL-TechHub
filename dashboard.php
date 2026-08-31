@@ -3,7 +3,19 @@
 session_start();
 
 require_once "php/db.php";
+require_once "php/remember_login.php";
 
+
+// ==========================================
+// REQUIRE LOGIN
+// ==========================================
+
+if (!isset($_SESSION["user_id"])) {
+
+    header("Location: login.html");
+    exit();
+
+}
 
 
 // ==========================================

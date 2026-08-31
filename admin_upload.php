@@ -1,5 +1,7 @@
 <?php
 
+set_time_limit(600);
+
 require_once "php/db.php";
 require_once "php/ffmpeg.php";
 

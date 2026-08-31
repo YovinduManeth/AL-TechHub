@@ -3,7 +3,7 @@
 session_start();
 
 require_once "php/db.php";
-
+require_once "php/remember_login.php";
 
 // ==========================================
 // CHECK LOGIN
