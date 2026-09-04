@@ -204,13 +204,13 @@ $stmt->close();
 
 <div class="d-flex align-items-center gap-3">
 
-    <span class="dashboard-user">
-
-        <i class="bi bi-person-circle me-1"></i>
-
-        <?php echo htmlspecialchars($full_name); ?>
-
-    </span>
+    <a
+    href="profile.php"
+    class="dashboard-user text-decoration-none"
+>
+    <i class="bi bi-person-circle me-1"></i>
+    <?php echo htmlspecialchars($_SESSION["username"]); ?>
+</a>
 
 
     <!-- Day / Night Mode -->

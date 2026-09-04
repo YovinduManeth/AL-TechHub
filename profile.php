@@ -1,3 +1,65 @@
+<?php
+
+session_start();
+
+require_once "php/db.php";
+require_once "php/remember_login.php";
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.html");
+    exit();
+}
+$user_id = $_SESSION["user_id"];
+
+$sql = "SELECT full_name, username, email, role
+        FROM users
+        WHERE user_id = ?
+        LIMIT 1";
+
+$stmt = $conn->prepare($sql);
+
+$stmt->bind_param("i", $user_id);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+if ($result->num_rows !== 1) {
+    session_destroy();
+    header("Location: login.html");
+    exit();
+}
+
+$user = $result->fetch_assoc();
+
+$stmt->close();
+$subject_sql = "SELECT s.subject_name
+                FROM student_subjects ss
+                INNER JOIN subjects s
+                    ON ss.subject_id = s.subject_id
+                WHERE ss.user_id = ?
+                ORDER BY s.subject_id";
+
+$subject_stmt = $conn->prepare($subject_sql);
+
+$subject_stmt->bind_param("i", $user_id);
+
+$subject_stmt->execute();
+
+$subject_result = $subject_stmt->get_result();
+
+$student_subjects = [];
+
+while ($subject = $subject_result->fetch_assoc()) {
+    $student_subjects[] = $subject["subject_name"];
+}
+
+$subject_stmt->close();
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,7 +102,7 @@
         <!-- Brand -->
         <a
             class="navbar-brand fw-bold dashboard-brand"
-            href="dashboard.html"
+            href="dashboard.php"
         >
 
             <i class="bi bi-mortarboard-fill me-1"></i>
@@ -78,7 +140,7 @@
 
                     <a
                         class="nav-link dashboard-nav-link"
-                        href="index.html"
+                        href="index.php"
                     >
 
                         <i class="bi bi-house me-1"></i>
@@ -93,7 +155,7 @@
 
                     <a
                         class="nav-link dashboard-nav-link"
-                        href="dashboard.html"
+                        href="dashboard.php"
                     >
 
                         <i class="bi bi-grid-1x2-fill me-1"></i>
@@ -108,7 +170,7 @@
 
                     <a
                         class="nav-link dashboard-nav-link"
-                        href="resources.html"
+                        href="resources.php"
                     >
 
                         <i class="bi bi-book me-1"></i>
@@ -123,7 +185,7 @@
 
                     <a
                         class="nav-link dashboard-nav-link"
-                        href="contact.html"
+                        href="contact.php"
                     >
 
                         <i class="bi bi-envelope me-1"></i>
@@ -140,7 +202,7 @@
             <div class="d-flex align-items-center gap-3">
 
                 <a
-                    href="profile.html"
+                    href="profile.php"
                     class="dashboard-user text-decoration-none"
                 >
 
@@ -150,10 +212,10 @@
                 </a>
 
 
-                <a
-                    href="login.html"
-                    class="btn btn-outline-primary btn-sm px-3"
-                >
+              <a
+                        href="php/logout.php"
+                        class="btn btn-outline-primary btn-sm px-3"
+                    >
 
                     <i class="bi bi-box-arrow-right me-1"></i>
                     Logout
@@ -247,9 +309,9 @@
                                         Full Name
                                     </label>
 
-                                    <p class="profile-value">
-                                        Student Name
-                                    </p>
+                                 <p class="profile-value">
+                                    <?php echo htmlspecialchars($user["full_name"]); ?>
+                                </p>
 
                                 </div>
 
@@ -260,8 +322,8 @@
                                         Username
                                     </label>
 
-                                    <p class="profile-value">
-                                        student01
+                                     <p class="profile-value">
+                                        <?php echo htmlspecialchars($user["username"]); ?>
                                     </p>
 
                                 </div>
@@ -274,23 +336,13 @@
                                     </label>
 
                                     <p class="profile-value">
-                                        student@example.com
+                                        <?php echo htmlspecialchars($user["email"]); ?>
                                     </p>
 
                                 </div>
 
 
-                                <div class="col-md-6">
-
-                                    <label class="profile-label">
-                                        Grade
-                                    </label>
-
-                                    <p class="profile-value">
-                                        Grade 12
-                                    </p>
-
-                                </div>
+                                
 
                             </div>
 
@@ -345,8 +397,8 @@
                                 <i class="bi bi-flask-fill"></i>
 
                                 <h6 class="fw-bold mt-2 mb-1">
-                                    Science for Technology
-                                </h6>
+                                <?php echo htmlspecialchars($student_subjects[0]); ?>
+                            </h6>
 
                                 <small class="text-muted">
                                     Compulsory Core
@@ -366,8 +418,8 @@
                                 <i class="bi bi-gear-fill"></i>
 
                                 <h6 class="fw-bold mt-2 mb-1">
-                                    Engineering Technology
-                                </h6>
+                                <?php echo htmlspecialchars($student_subjects[1]); ?>
+                            </h6>
 
                                 <small class="text-muted">
                                     Basket 02 Elective
@@ -387,8 +439,8 @@
                                 <i class="bi bi-pc-display"></i>
 
                                 <h6 class="fw-bold mt-2 mb-1">
-                                    Information & Communication Technology
-                                </h6>
+                                <?php echo htmlspecialchars($student_subjects[2]); ?>
+                            </h6>
 
                                 <small class="text-muted">
                                     Basket 03 Elective
@@ -442,7 +494,7 @@
 
 
                         <a
-                            href="dashboard.html"
+                            href="dashboard.php"
                             class="btn btn-outline-secondary"
                         >
 
