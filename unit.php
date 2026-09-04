@@ -386,54 +386,6 @@ $stmt->close();
 
     <div class="row g-4">
 
-
-        <!-- Lessons -->
-
-        <div class="col-md-4">
-
-            <div class="card subject-card h-100 rounded-4">
-
-                <div class="card-body p-4">
-
-                    <div class="mb-3">
-
-                        <i class="bi bi-play-circle-fill fs-2 text-primary"></i>
-
-                    </div>
-
-
-                    <h5 class="fw-bold">
-
-                        Lessons
-
-                    </h5>
-
-
-                    <p class="text-muted small">
-
-                        Watch video lessons and access audio learning materials.
-
-                    </p>
-
-
-                    <a
-                        href="#"
-                        class="btn btn-dashboard fw-bold"
-                    >
-
-                        <i class="bi bi-play-circle me-1"></i>
-
-                        View Lessons
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
         <!-- Short Notes -->
 
         <div class="col-md-4">

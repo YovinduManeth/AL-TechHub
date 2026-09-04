@@ -244,29 +244,47 @@ $stmt->close();
 
             <!-- Right Side -->
 
-            <div class="d-flex align-items-center gap-3">
+<div class="d-flex align-items-center gap-3">
 
-                <span class="dashboard-user">
+    <span class="dashboard-user">
 
-                    <i class="bi bi-person-circle me-1"></i>
+        <i class="bi bi-person-circle me-1"></i>
 
-                    <?php echo htmlspecialchars($full_name); ?>
+        <?php echo htmlspecialchars($full_name); ?>
 
-                </span>
+    </span>
 
 
-                <a
-                    href="php/logout.php"
-                    class="btn btn-outline-primary btn-sm px-3"
-                >
+    <!-- Day / Night Mode -->
 
-                    <i class="bi bi-box-arrow-right me-1"></i>
+    <button
+        type="button"
+        id="themeToggle"
+        class="btn btn-link theme-toggle"
+        aria-label="Switch to night mode"
+        title="Switch to night mode"
+    >
 
-                    Logout
+        <i
+            class="bi bi-moon"
+            id="themeIcon"
+        ></i>
 
-                </a>
+    </button>
 
-            </div>
+
+    <a
+        href="php/logout.php"
+        class="btn btn-outline-primary btn-sm px-3"
+    >
+
+        <i class="bi bi-box-arrow-right me-1"></i>
+
+        Logout
+
+    </a>
+
+</div>
 
         </div>
 

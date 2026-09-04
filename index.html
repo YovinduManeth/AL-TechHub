@@ -74,7 +74,7 @@
 
                     <a
                         class="nav-link home-nav-link active"
-                        href="index.php"
+                        href="index.html"
                     >
                         <i class="bi bi-house me-1"></i>
                         Home
@@ -109,30 +109,43 @@
 
             </ul>
 
-            <div class="d-flex align-items-center gap-3">
+           <!-- Right Side -->
 
-                <a
-                    href="profile.php"
-                    class="dashboard-user text-decoration-none"
-                >
-                    <i class="bi bi-person-circle me-1"></i>
-                    User Account
-                </a>
+<div class="d-flex align-items-center gap-3">
 
-                <a
-                    href="login.php"
-                    class="btn btn-outline-primary btn-sm px-3"
-                >
-                    <i class="bi bi-box-arrow-right me-1"></i>
-                    Logout
-                </a>
-
-            </div>
+   
 
 
+    <!-- Day / Night Mode -->
 
-        
-            
+    <button
+        type="button"
+        id="themeToggle"
+        class="btn btn-link theme-toggle"
+        aria-label="Switch to night mode"
+        title="Switch to night mode"
+    >
+
+        <i
+            class="bi bi-moon"
+            id="themeIcon"
+        ></i>
+
+    </button>
+
+
+    <a
+        href="php/logout.php"
+        class="btn btn-outline-primary btn-sm px-3"
+    >
+
+        <i class="bi bi-box-arrow-right me-1"></i>
+
+        Logout
+
+    </a>
+
+</div>
 
         </div>
 

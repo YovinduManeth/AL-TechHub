@@ -90,3 +90,48 @@ function generateVideoQuality($video_path, $output_path, $height)
         "output" => $output_lines
     ];
 }
+
+
+function getVideoDuration($video_path)
+{
+    global $ffmpeg_path;
+
+    if (!file_exists($ffmpeg_path)) {
+        return false;
+    }
+
+    if (!file_exists($video_path)) {
+        return false;
+    }
+
+    $input = '"' . $video_path . '"';
+
+    $command =
+        '"' . $ffmpeg_path . '"' .
+        ' -i ' . $input .
+        ' 2>&1';
+
+    $output = [];
+    exec($command, $output);
+
+    foreach ($output as $line) {
+
+        if (preg_match(
+            '/Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)/',
+            $line,
+            $matches
+        )) {
+
+            $hours = (int)$matches[1];
+            $minutes = (int)$matches[2];
+            $seconds = (float)$matches[3];
+
+            return
+                ($hours * 3600) +
+                ($minutes * 60) +
+                $seconds;
+        }
+    }
+
+    return false;
+}

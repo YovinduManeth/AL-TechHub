@@ -155,7 +155,7 @@ $_SESSION["role"] = $user["role"];
 
 if ($user["role"] === "admin") {
 
-    header("Location: ../admin-upload.html");
+    header("Location: ../admin-upload.php");
 
 } else {
 
@@ -166,4 +166,3 @@ if ($user["role"] === "admin") {
 exit();
 
 ?>
-```

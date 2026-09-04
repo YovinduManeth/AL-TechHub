@@ -155,35 +155,35 @@ if (!$lesson) {
 
 
     <!-- =========================================
-         NAVIGATION
-    ========================================== -->
+     NAVIGATION
+========================================= -->
 
-    <nav class="navbar navbar-expand-lg lesson-navbar">
+<nav class="navbar navbar-expand-lg lesson-navbar">
 
-        <div class="container">
-
-
-            <!-- Back Button -->
-
-            <a
-                href="units.php?subject=<?php echo urlencode($lesson["subject_code"]); ?>"
-                class="btn btn-lesson-back btn-sm"
-            >
-
-                <i class="bi bi-arrow-left me-1"></i>
-
-                Back to Unit
-
-            </a>
+    <div class="container">
 
 
-            <!-- Lesson Information -->
+        <!-- Back Button -->
 
-            <span class="lesson-navbar-title">
+        <a
+            href="units.php?subject=<?php echo urlencode($lesson["subject_code"]); ?>"
+            class="btn btn-lesson-back btn-sm"
+        >
 
-                <i class="bi bi-book me-1"></i>
+            <i class="bi bi-arrow-left me-1"></i>
 
-                <?php echo htmlspecialchars($lesson["subject_code"]); ?>
+            Back to Unit
+
+        </a>
+
+
+        <!-- Lesson Information -->
+
+        <span class="lesson-navbar-title">
+
+            <i class="bi bi-book me-1"></i>
+
+            <?php echo htmlspecialchars($lesson["subject_code"]); ?>
 
             <span class="lesson-divider">•</span>
 
@@ -200,11 +200,30 @@ if (!$lesson) {
             Lesson
             <?php echo htmlspecialchars($lesson["lesson_number"]); ?>
 
-            </span>
+        </span>
 
-        </div>
 
-    </nav>
+        <!-- Day / Night Mode -->
+
+        <button
+            type="button"
+            id="themeToggle"
+            class="btn btn-link theme-toggle"
+            aria-label="Switch to night mode"
+            title="Switch to night mode"
+        >
+
+            <i
+                class="bi bi-moon"
+                id="themeIcon"
+            ></i>
+
+        </button>
+
+
+    </div>
+
+</nav>
 
 
 

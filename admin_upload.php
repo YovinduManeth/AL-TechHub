@@ -865,9 +865,44 @@ if (!$audio_result["success"]) {
 // VIDEO DURATION
 // ==========================================
 
-// For now we leave duration as NULL.
+$duration_seconds = getVideoDuration($video_path);
 
-$duration_minutes = null;
+if ($duration_seconds === false) {
+
+    // Remove generated files if duration cannot be detected
+
+    if (file_exists($video_path)) {
+        unlink($video_path);
+    }
+
+    if (file_exists($audio_path)) {
+        unlink($audio_path);
+    }
+
+    if (file_exists($video_1080p_path)) {
+        unlink($video_1080p_path);
+    }
+
+    if (file_exists($video_720p_path)) {
+        unlink($video_720p_path);
+    }
+
+    if (file_exists($video_480p_path)) {
+        unlink($video_480p_path);
+    }
+
+    if (file_exists($video_360p_path)) {
+        unlink($video_360p_path);
+    }
+
+    die("Could not determine video duration.");
+}
+
+
+// Convert seconds to minutes
+
+$duration_minutes =
+    round($duration_seconds / 60, 2);
 
 
 // ==========================================
@@ -895,7 +930,7 @@ $stmt = $conn->prepare($sql);
 
 
 $stmt->bind_param(
-    "isssssssssi",
+    "isssssssssd",
     $unit_id,
     $lesson_number,
     $title,

@@ -141,7 +141,7 @@ $stmt->close();
     <div class="container">
 
         <!-- Brand -->
-        <a class="navbar-brand fw-bold dashboard-brand" href="dashboard.php">
+        <a class="navbar-brand fw-bold dashboard-brand" href="index.html">
             <i class="bi bi-mortarboard-fill me-1"></i>
             A/L TechHub
         </a>
@@ -170,7 +170,7 @@ $stmt->close();
                 <li class="nav-item">
                     <a
                         class="nav-link dashboard-nav-link"
-                        href="index.php"
+                        href="index.html"
                     >
                         <i class="bi bi-house me-1"></i>
                         Home
@@ -201,24 +201,48 @@ $stmt->close();
 
 
             <!-- Right Side -->
-            <div class="d-flex align-items-center gap-3">
-                <a
-                    href="profile.html"
-                    class="dashboard-user text-decoration-none"
-                >
-                    <i class="bi bi-person-circle me-1"></i>
-                    <?php echo htmlspecialchars($full_name); ?>
-                </a>
 
-                <a
-                    href="php/logout.php"
-                    class="btn btn-outline-primary btn-sm px-3"
-                >
-                    <i class="bi bi-box-arrow-right me-1"></i>
-                    Logout
-                </a>
+<div class="d-flex align-items-center gap-3">
 
-            </div>
+    <span class="dashboard-user">
+
+        <i class="bi bi-person-circle me-1"></i>
+
+        <?php echo htmlspecialchars($full_name); ?>
+
+    </span>
+
+
+    <!-- Day / Night Mode -->
+
+    <button
+        type="button"
+        id="themeToggle"
+        class="btn btn-link theme-toggle"
+        aria-label="Switch to night mode"
+        title="Switch to night mode"
+    >
+
+        <i
+            class="bi bi-moon"
+            id="themeIcon"
+        ></i>
+
+    </button>
+
+
+    <a
+        href="php/logout.php"
+        class="btn btn-outline-primary btn-sm px-3"
+    >
+
+        <i class="bi bi-box-arrow-right me-1"></i>
+
+        Logout
+
+    </a>
+
+</div>
 
         </div>
 

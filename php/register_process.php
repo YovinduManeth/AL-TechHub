@@ -1,4 +1,3 @@
-```php
 <?php
 
 require_once "db.php";
@@ -29,6 +28,8 @@ $confirm_password = $_POST["confirm_password"] ?? "";
 $basket02 = $_POST["basket02"] ?? "";
 $basket03 = $_POST["basket03"] ?? "";
 
+$terms = isset($_POST["terms"]);
+
 
 // ==========================================
 // BASIC VALIDATION
@@ -45,6 +46,22 @@ if (
 ) {
 
     die("Please fill in all required fields.");
+
+}
+
+if (!$terms) {
+
+    die("You must agree to the Terms and Conditions.");
+
+}
+
+// ==========================================
+// CHECK EMAIL
+// ==========================================
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+    die("Please enter a valid email address.");
 
 }
 
@@ -95,6 +112,13 @@ if ($check_result->num_rows > 0) {
 }
 
 $check_stmt->close();
+
+
+// ==========================================
+// START DATABASE TRANSACTION
+// ==========================================
+
+$conn->begin_transaction();
 
 
 // ==========================================
@@ -226,6 +250,7 @@ $subject_stmt->execute();
 
 $subject_stmt->close();
 
+$conn->commit();
 
 // ==========================================
 // REGISTRATION SUCCESS
@@ -235,4 +260,4 @@ header("Location: ../login.html?registered=success");
 exit();
 
 ?>
-```
+

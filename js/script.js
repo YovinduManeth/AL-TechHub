@@ -131,18 +131,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+
 // ==========================================
 // Data-Saver Mode
 // ==========================================
 
 function setupDataSaverMode() {
 
-    const toggle = document.getElementById("dataModeToggle");
-    const videoContainer = document.getElementById("videoContainer");
-    const audioContainer = document.getElementById("audioContainer");
+    const toggle =
+        document.getElementById("dataModeToggle");
 
-    const videoPlayer = document.getElementById("videoPlayer");
-    const audioPlayer = document.getElementById("audioPlayer");
+    const videoContainer =
+        document.getElementById("videoContainer");
+
+    const audioContainer =
+        document.getElementById("audioContainer");
+
+    const videoQualityBox =
+        document.querySelector(".video-quality-box");
+
+    const videoPlayer =
+        document.getElementById("videoPlayer");
+
+    const audioPlayer =
+        document.getElementById("audioPlayer");
 
     const audioSource = audioPlayer
         ? audioPlayer.querySelector("source")
@@ -154,6 +166,7 @@ function setupDataSaverMode() {
         !toggle ||
         !videoContainer ||
         !audioContainer ||
+        !videoQualityBox ||
         !videoPlayer ||
         !audioPlayer ||
         !audioSource
@@ -176,21 +189,35 @@ function setupDataSaverMode() {
             // Hide video
             videoContainer.style.display = "none";
 
+            // Hide video quality selector
+            videoQualityBox.style.display = "none";
+
 
             // Get audio source
-            const audioPath = audioSource.getAttribute("src");
+            const audioPath =
+                audioSource.getAttribute("src");
 
-            console.log("Data-Saver audio path:", audioPath);
+            console.log(
+                "Data-Saver audio path:",
+                audioPath
+            );
 
 
             // Make sure an audio file exists
-            if (!audioPath || audioPath.trim() === "") {
+            if (
+                !audioPath ||
+                audioPath.trim() === ""
+            ) {
 
-                alert("No audio file is available for this lesson.");
+                alert(
+                    "No audio file is available for this lesson."
+                );
 
                 toggle.checked = false;
 
                 videoContainer.style.display = "block";
+
+                videoQualityBox.style.display = "flex";
 
                 return;
 
@@ -222,6 +249,9 @@ function setupDataSaverMode() {
             // Show video
             videoContainer.style.display = "block";
 
+            // Show video quality selector
+            videoQualityBox.style.display = "flex";
+
         }
 
     });
@@ -231,7 +261,6 @@ function setupDataSaverMode() {
 
 // Start Data-Saver Mode
 setupDataSaverMode();
-
 
 
 
@@ -353,3 +382,131 @@ if (loginUrlParams.get("error") === "invalid") {
     );
 
 }
+
+
+// ==========================================
+// Global Day / Night Mode
+// ==========================================
+
+function setupThemeMode() {
+
+    const modeButton =
+        document.getElementById("themeToggle");
+
+    const modeIcon =
+        document.getElementById("themeIcon");
+
+
+    // Stop if theme button does not exist
+    if (!modeButton || !modeIcon) {
+        return;
+    }
+
+
+    // ==========================================
+    // Load Saved Theme
+    // ==========================================
+
+    const savedTheme =
+        localStorage.getItem("theme");
+
+
+    if (savedTheme === "dark") {
+
+        document.body.classList.add("dark-mode");
+
+        modeIcon.classList.remove("bi-moon");
+        modeIcon.classList.add("bi-sun");
+
+        modeButton.setAttribute(
+            "aria-label",
+            "Switch to day mode"
+        );
+
+        modeButton.setAttribute(
+            "title",
+            "Switch to day mode"
+        );
+
+    }
+
+
+    // ==========================================
+    // Toggle Theme
+    // ==========================================
+
+    modeButton.addEventListener("click", function () {
+
+        document.body.classList.toggle("dark-mode");
+
+
+        const isDarkMode =
+            document.body.classList.contains("dark-mode");
+
+
+        if (isDarkMode) {
+
+            localStorage.setItem(
+                "theme",
+                "dark"
+            );
+
+
+            modeIcon.classList.remove(
+                "bi-moon"
+            );
+
+            modeIcon.classList.add(
+                "bi-sun"
+            );
+
+
+            modeButton.setAttribute(
+                "aria-label",
+                "Switch to day mode"
+            );
+
+            modeButton.setAttribute(
+                "title",
+                "Switch to day mode"
+            );
+
+        } else {
+
+            localStorage.setItem(
+                "theme",
+                "light"
+            );
+
+
+            modeIcon.classList.remove(
+                "bi-sun"
+            );
+
+            modeIcon.classList.add(
+                "bi-moon"
+            );
+
+
+            modeButton.setAttribute(
+                "aria-label",
+                "Switch to night mode"
+            );
+
+            modeButton.setAttribute(
+                "title",
+                "Switch to night mode"
+            );
+
+        }
+
+    });
+
+}
+
+
+// Start Theme Mode
+document.addEventListener(
+    "DOMContentLoaded",
+    setupThemeMode
+);
