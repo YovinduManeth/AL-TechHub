@@ -1,11 +1,6 @@
 # Database configuration
 php/db.php
 
-# Uploaded lesson videos
-uploads/videos/*.mp4
-
-# Generated video quality versions
-uploads/videos/quality/*.mp4
 
 # Generated lesson audio
 uploads/audios/*.mp3
