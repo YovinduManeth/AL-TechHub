@@ -407,44 +407,58 @@ if ($total_lessons > 0) {
     </div>
 
     <!-- Unit Progress -->
-<div class="card border-0 shadow-sm mb-4">
 
-    <div class="card-body">
+<div class="card border-0 shadow-sm mb-4 unit-progress-card">
 
-        <div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="card-body p-4">
 
-            <h5 class="mb-0 fw-bold">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h5 class="mb-0 fw-bold unit-progress-title">
                 Unit Progress
             </h5>
 
-            <span class="fw-semibold">
+            <span class="fw-semibold unit-progress-count">
+
                 <?php echo $completed_lessons; ?>
                 /
                 <?php echo $total_lessons; ?>
                 Lessons Completed
+
             </span>
 
         </div>
 
-        <div class="progress" style="height: 12px;">
+
+        <div class="progress unit-progress-bar">
 
             <div
-                class="progress-bar"
+                class="progress-bar unit-progress-fill"
                 role="progressbar"
                 style="width: <?php echo $progress_percentage; ?>%;"
                 aria-valuenow="<?php echo $progress_percentage; ?>"
                 aria-valuemin="0"
                 aria-valuemax="100"
             >
-                <?php echo $progress_percentage; ?>%
+
             </div>
+
+        </div>
+
+
+        <div class="text-end mt-2">
+
+            <small class="text-muted fw-semibold">
+
+                <?php echo $progress_percentage; ?>% Complete
+
+            </small>
 
         </div>
 
     </div>
 
 </div>
-
 
     <!-- Learning Content -->
 
