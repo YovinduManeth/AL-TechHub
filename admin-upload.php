@@ -35,6 +35,38 @@ while ($row = $result->fetch_assoc()) {
 
 }
 
+
+// ==========================================
+// GET ALL PAST PAPERS
+// ==========================================
+
+$sql = "SELECT
+            past_papers.paper_id,
+            past_papers.year,
+            past_papers.title,
+            past_papers.file_path,
+            past_papers.created_at,
+            subjects.subject_code,
+            subjects.subject_name
+
+        FROM past_papers
+
+        INNER JOIN subjects
+            ON past_papers.subject_id = subjects.subject_id
+
+        ORDER BY past_papers.year DESC,
+                 subjects.subject_code ASC";
+
+$result = $conn->query($sql);
+
+$past_papers = [];
+
+while ($row = $result->fetch_assoc()) {
+
+    $past_papers[] = $row;
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -238,7 +270,6 @@ while ($row = $result->fetch_assoc()) {
                             action="admin_upload.php"
                             method="POST"
                             enctype="multipart/form-data"
-                            onsubmit="alert('TITLE VALUE: [' + document.getElementById('lessonTitle').value + ']');"
                         >
 
 
@@ -693,40 +724,7 @@ while ($row = $result->fetch_assoc()) {
                                         </div>
 
 
-                                        <!-- Grade -->
-
-                                        <div class="mb-4">
-
-                                            <label class="form-label fw-bold">
-
-                                                <i class="bi bi-mortarboard me-1"></i>
-
-                                                Grade
-
-                                            </label>
-
-                                            <select
-                                                class="form-select"
-                                                name="paper_grade"
-                                                id="paperGrade"
-                                            >
-
-                                                <option value="" selected disabled>
-                                                    -- Select Grade --
-                                                </option>
-
-                                                <option value="12">
-                                                    Grade 12
-                                                </option>
-
-                                                <option value="13">
-                                                    Grade 13
-                                                </option>
-
-                                            </select>
-
-                                        </div>
-
+                        
 
                                         <!-- Year -->
 
@@ -838,6 +836,184 @@ while ($row = $result->fetch_assoc()) {
 
         </div>
 
+                <!-- =========================================
+             PAST PAPER MANAGEMENT
+        ========================================== -->
+
+                <div
+            class="row justify-content-center mx-auto"
+            id="pastPaperManagement"
+            style="display: none;"
+        >
+
+            <div class="col-12 col-lg-10 col-xl-9 mx-auto">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <div>
+
+                                <h4 class="fw-bold mb-1">
+                                    Past Paper Management
+                                </h4>
+
+                                <p class="text-muted mb-0">
+                                    View and manage uploaded past papers.
+                                </p>
+
+                            </div>
+
+                            <span class="badge bg-primary">
+                                <?php echo count($past_papers); ?> Papers
+                            </span>
+
+                        </div>
+
+
+                        <?php if (empty($past_papers)): ?>
+
+                            <div class="text-center py-5">
+
+                                <i class="bi bi-file-earmark-pdf fs-1 text-muted"></i>
+
+                                <p class="text-muted mt-3 mb-0">
+                                    No past papers have been uploaded yet.
+                                </p>
+
+                            </div>
+
+                        <?php else: ?>
+
+                            <div class="table-responsive">
+
+                                <table class="table table-hover align-middle">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>Subject</th>
+                                            <th>Year</th>
+                                            <th>Title</th>
+                                            <th>Uploaded</th>
+                                            <th class="text-center">Actions</th>
+
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody>
+
+                                        <?php foreach ($past_papers as $paper): ?>
+
+                                            <tr>
+
+                                                <td>
+
+                                                    <span class="badge bg-primary">
+
+                                                        <?php
+                                                        echo htmlspecialchars(
+                                                            $paper["subject_code"]
+                                                        );
+                                                        ?>
+
+                                                    </span>
+
+                                                </td>
+
+
+                                                <td class="fw-semibold">
+
+                                                    <?php
+                                                    echo htmlspecialchars(
+                                                        $paper["year"]
+                                                    );
+                                                    ?>
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <?php
+                                                    echo htmlspecialchars(
+                                                        $paper["title"]
+                                                    );
+                                                    ?>
+
+                                                </td>
+
+
+                                                <td class="text-muted">
+
+                                                    <?php
+                                                    echo date(
+                                                        "d M Y, h:i A",
+                                                        strtotime(
+                                                            $paper["created_at"]
+                                                        )
+                                                    );
+                                                    ?>
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <div class="d-flex gap-2 justify-content-center">
+
+                                                        <a
+                                                            href="<?php echo htmlspecialchars($paper["file_path"]); ?>"
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            class="btn btn-sm btn-outline-primary"
+                                                        >
+
+                                                            <i class="bi bi-eye me-1"></i>
+                                                            Open
+
+                                                        </a>
+
+
+                                                        <a
+                                                            href="admin_delete_paper.php?paper_id=<?php echo $paper["paper_id"]; ?>"
+                                                            class="btn btn-sm btn-outline-danger"
+                                                            onclick="return confirm('Are you sure you want to delete this past paper?');"
+                                                        >
+
+                                                            <i class="bi bi-trash me-1"></i>
+                                                            Delete
+
+                                                        </a>
+
+                                                    </div>
+
+                                                </td>
+
+                                            </tr>
+
+                                        <?php endforeach; ?>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        <?php endif; ?>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </main>
 
 
@@ -861,6 +1037,9 @@ const shortNotesFields =
 
 const pastPaperFields =
     document.getElementById("pastPaperFields");
+
+const pastPaperManagement =
+    document.getElementById("pastPaperManagement");
 
 const unitLocationFields =
     document.getElementById("unitLocationFields");
@@ -904,9 +1083,6 @@ const noteFile =
 const pastPaperSubject =
     document.getElementById("pastPaperSubject");
 
-const paperGrade =
-    document.getElementById("paperGrade");
-
 const paperYear =
     document.querySelector('input[name="paper_year"]');
 
@@ -942,6 +1118,8 @@ resourceType.addEventListener("change", function () {
 
     pastPaperFields.style.display = "none";
 
+    pastPaperManagement.style.display = "none";
+
     unitLocationFields.style.display = "block";
 
 
@@ -964,8 +1142,6 @@ resourceType.addEventListener("change", function () {
     noteFile.required = false;
 
     pastPaperSubject.required = false;
-
-    paperGrade.required = false;
 
     paperYear.required = false;
 
@@ -1055,12 +1231,12 @@ resourceType.addEventListener("change", function () {
 
         pastPaperFields.style.display = "block";
 
+        pastPaperManagement.style.display = "block";
+
 
         // Past Paper fields required
 
         pastPaperSubject.required = true;
-
-        paperGrade.required = true;
 
         paperYear.required = true;
 
@@ -1137,7 +1313,8 @@ generalGrade.addEventListener("change", function () {
 
 });
 
-</script>                                  
+</script>
+
 
 </body>
 

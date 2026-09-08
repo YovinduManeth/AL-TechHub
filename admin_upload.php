@@ -47,8 +47,6 @@ if ($resource_type === "past_paper") {
 
     $subject_id = $_POST["subject_id"] ?? "";
 
-    $paper_grade = $_POST["paper_grade"] ?? "";
-
     $paper_year = $_POST["paper_year"] ?? "";
 
     $paper_title = trim($_POST["paper_title"] ?? "");
@@ -59,19 +57,18 @@ if ($resource_type === "past_paper") {
     // ==========================================
 
     if (
-        empty($subject_id) ||
-        empty($paper_grade) ||
-        empty($paper_year) ||
-        empty($paper_title) ||
-        !isset($_FILES["paper_file"])
-    ) {
+    empty($subject_id) ||
+    empty($paper_year) ||
+    empty($paper_title) ||
+    !isset($_FILES["paper_file"])
+) {
 
-        die(
-            "Please select a subject, grade, year, " .
-            "enter a paper title, and select a PDF file."
-        );
+    die(
+        "Please select a subject, enter a year, " .
+        "enter a paper title, and select a PDF file."
+    );
 
-    }
+}
 
 
     // ==========================================
@@ -85,20 +82,6 @@ if ($resource_type === "past_paper") {
     }
 
     $subject_id = (int)$subject_id;
-
-
-    // ==========================================
-    // CHECK GRADE
-    // ==========================================
-
-    if (
-        $paper_grade !== "12" &&
-        $paper_grade !== "13"
-    ) {
-
-        die("Invalid grade selected.");
-
-    }
 
 
     // ==========================================
@@ -212,32 +195,29 @@ if ($resource_type === "past_paper") {
 
 
     // ==========================================
-    // INSERT PAST PAPER INTO DATABASE
-    // ==========================================
+// INSERT PAST PAPER INTO DATABASE
+// ==========================================
 
-    $sql = "INSERT INTO past_papers
-            (
-                subject_id,
-                grade,
-                year,
-                title,
-                file_path
-            )
-            VALUES (?, ?, ?, ?, ?)";
-
-
-    $stmt = $conn->prepare($sql);
+$sql = "INSERT INTO past_papers
+        (
+            subject_id,
+            year,
+            title,
+            file_path
+        )
+        VALUES (?, ?, ?, ?)";
 
 
-    $stmt->bind_param(
-        "isiss",
-        $subject_id,
-        $paper_grade,
-        $paper_year,
-        $paper_title,
-        $paper_path
-    );
+$stmt = $conn->prepare($sql);
 
+
+$stmt->bind_param(
+    "iiss",
+    $subject_id,
+    $paper_year,
+    $paper_title,
+    $paper_path
+);
 
     // ==========================================
     // DATABASE INSERT
@@ -282,12 +262,6 @@ if ($resource_type === "past_paper") {
     echo "<p>Subject ID: " .
          htmlspecialchars($subject_id) .
          "</p>";
-
-
-    echo "<p>Grade: " .
-         htmlspecialchars($paper_grade) .
-         "</p>";
-
 
     echo "<p>Year: " .
          htmlspecialchars($paper_year) .
