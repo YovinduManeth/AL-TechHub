@@ -29,7 +29,6 @@ $full_name = $_SESSION["full_name"];
 // ==========================================
 
 $subject_id = $_GET["subject"] ?? "";
-$grade = $_GET["grade"] ?? "";
 
 
 // Make sure subject ID is valid
@@ -42,17 +41,6 @@ if (!is_numeric($subject_id)) {
 }
 
 $subject_id = (int)$subject_id;
-
-
-// Make sure grade is valid
-
-if ($grade !== "12" && $grade !== "13") {
-
-    header("Location: dashboard.php");
-    exit();
-
-}
-
 
 // ==========================================
 // GET SUBJECT DETAILS
@@ -104,16 +92,14 @@ $sql = "SELECT
             created_at
         FROM past_papers
         WHERE subject_id = ?
-        AND grade = ?
         ORDER BY year DESC";
 
 
 $stmt = $conn->prepare($sql);
 
 $stmt->bind_param(
-    "is",
-    $subject_id,
-    $grade
+    "i",
+    $subject_id
 );
 
 $stmt->execute();
@@ -361,14 +347,13 @@ $stmt->close();
 
         <p class="small dashboard-label mb-1">
 
-            GRADE
-            <?php echo htmlspecialchars($grade); ?>
+    <?php echo htmlspecialchars($subject["subject_code"]); ?>
 
-            •
+    •
 
-            <?php echo htmlspecialchars($subject["subject_code"]); ?>
+    G.C.E. A/L
 
-        </p>
+</p>
 
 
         <h3 class="fw-bold mb-2">
@@ -435,8 +420,7 @@ $stmt->close();
 
             <i class="bi bi-info-circle me-2"></i>
 
-            No past papers are available for this subject
-            and grade yet.
+            No past papers are available for this subject yet.
 
         </div>
 
@@ -491,23 +475,20 @@ $stmt->close();
 
                             </h5>
 
+                                <!-- PDF Information -->
 
-                            <!-- Grade -->
+                                    <p class="text-muted small mb-4">
 
-                            <p class="text-muted small mb-4">
+                                        <i class="bi bi-file-earmark-pdf me-1"></i>
 
-                                <i class="bi bi-mortarboard me-1"></i>
+                                        G.C.E. A/L Past Paper
 
-                                Grade
-                                <?php echo htmlspecialchars($paper["grade"]); ?>
+                                        <span class="mx-1">•</span>
 
-                                <span class="mx-1">•</span>
+                                        PDF Document
 
-                                <i class="bi bi-file-earmark-pdf me-1"></i>
-
-                                PDF Document
-
-                            </p>
+                                    </p>
+                           
 
 
                             <!-- Open PDF -->

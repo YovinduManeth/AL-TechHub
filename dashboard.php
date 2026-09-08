@@ -700,7 +700,7 @@ if ($total_lessons > 0) {
 
                         <a  
                             id="pastPapersLink-<?php echo $subject["subject_id"]; ?>"
-                            href="past-papers.php?subject=<?php echo $subject["subject_id"]; ?>&grade=12"
+                            href="past-papers.php?subject=<?php echo $subject["subject_id"]; ?>"
                             class="btn btn-outline-primary flex-fill fw-bold"
                         >
 
@@ -879,82 +879,67 @@ if ($total_lessons > 0) {
 
     <script>
 
-    const grade12 = document.getElementById("grade12");
-    const grade13 = document.getElementById("grade13");
+    const grade12 =
+    document.getElementById("grade12");
 
-    const unitsLinks =
-        document.querySelectorAll('[id^="unitsLink-"]');
+const grade13 =
+    document.getElementById("grade13");
 
-    const pastPaperLinks =
-        document.querySelectorAll('[id^="pastPapersLink-"]');
-
-
-    function updateGradeLinks() {
-
-        let selectedGrade;
-
-        if (grade13.checked) {
-
-            selectedGrade = "13";
-
-        } else {
-
-            selectedGrade = "12";
-
-        }
+const unitsLinks =
+    document.querySelectorAll(
+        '[id^="unitsLink-"]'
+    );
 
 
-        // Update View Units links
+function updateGradeLinks() {
 
-        unitsLinks.forEach(function (link) {
+    let selectedGrade;
 
-            const url =
-                new URL(link.href);
+    if (grade13.checked) {
 
-            url.searchParams.set(
-                "grade",
-                selectedGrade
-            );
+        selectedGrade = "13";
 
-            link.href = url.toString();
+    } else {
 
-        });
-
-
-        // Update Past Papers links
-
-        pastPaperLinks.forEach(function (link) {
-
-            const url =
-                new URL(link.href);
-
-            url.searchParams.set(
-                "grade",
-                selectedGrade
-            );
-
-            link.href = url.toString();
-
-        });
+        selectedGrade = "12";
 
     }
 
 
-    grade12.addEventListener(
-        "change",
-        updateGradeLinks
-    );
+    unitsLinks.forEach(function (link) {
+
+        const url =
+            new URL(link.href);
+
+        url.searchParams.set(
+            "grade",
+            selectedGrade
+        );
+
+        link.href =
+            url.toString();
+
+    });
+
+}
 
 
-    grade13.addEventListener(
-        "change",
-        updateGradeLinks
-    );
+grade12.addEventListener(
+    "change",
+    updateGradeLinks
+);
 
 
-    // Set initial grade
+grade13.addEventListener(
+    "change",
+    updateGradeLinks
+);
 
-    updateGradeLinks();
+
+// Set initial grade
+
+updateGradeLinks();
+
 
 </script>
 
