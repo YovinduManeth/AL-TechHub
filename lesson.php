@@ -644,18 +644,25 @@ if (!$lesson) {
 
     </main>
 
-    <script>
-        const currentLessonId = <?php echo $lesson["lesson_id"]; ?>;
-    </script>
 
     <script>
+
+const currentLessonId = <?php echo $lesson["lesson_id"]; ?>;
 
 const videoPlayer =
     document.getElementById("videoPlayer");
 
-
 const videoQuality =
     document.getElementById("videoQuality");
+
+const dataModeToggle =
+    document.getElementById("dataModeToggle");
+
+const audioContainer =
+    document.getElementById("audioContainer");
+
+const audioPlayer =
+    document.getElementById("audioPlayer");
 
 
 // ==========================================
@@ -677,6 +684,7 @@ const videoQualities = {
         "<?php echo htmlspecialchars($lesson["video_360p_path"] ?? ""); ?>"
 
 };
+
 
 
 // ==========================================

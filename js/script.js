@@ -131,7 +131,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-
 // ==========================================
 // Data-Saver Mode
 // ==========================================
@@ -156,12 +155,14 @@ function setupDataSaverMode() {
     const audioPlayer =
         document.getElementById("audioPlayer");
 
-    const audioSource = audioPlayer
-        ? audioPlayer.querySelector("source")
-        : null;
+    const audioSource =
+        audioPlayer
+            ? audioPlayer.querySelector("source")
+            : null;
 
 
     // Stop if this is not the lesson page
+
     if (
         !toggle ||
         !videoContainer ||
@@ -171,96 +172,241 @@ function setupDataSaverMode() {
         !audioPlayer ||
         !audioSource
     ) {
+
         return;
+
     }
 
 
-    toggle.addEventListener("change", function () {
-
-        // ==========================================
-        // DATA-SAVER ON
-        // ==========================================
-
-        if (toggle.checked) {
-
-            // Stop video
-            videoPlayer.pause();
-
-            // Hide video
-            videoContainer.style.display = "none";
-
-            // Hide video quality selector
-            videoQualityBox.style.display = "none";
+    toggle.addEventListener(
+        "change",
+        function () {
 
 
-            // Get audio source
-            const audioPath =
-                audioSource.getAttribute("src");
+            // ==========================================
+            // DATA-SAVER ON
+            // ==========================================
 
-            console.log(
-                "Data-Saver audio path:",
-                audioPath
-            );
+            if (toggle.checked) {
+
+                // Save video position BEFORE stopping it
+
+                const videoTime =
+                    videoPlayer.currentTime;
 
 
-            // Make sure an audio file exists
-            if (
-                !audioPath ||
-                audioPath.trim() === ""
-            ) {
-
-                alert(
-                    "No audio file is available for this lesson."
+                console.log(
+                    "Switching to Data Saver Mode"
                 );
 
-                toggle.checked = false;
+                console.log(
+                    "Video position:",
+                    videoTime
+                );
 
-                videoContainer.style.display = "block";
 
-                videoQualityBox.style.display = "flex";
+                // Stop video
 
-                return;
+                videoPlayer.pause();
+
+
+                // Hide video
+
+                videoContainer.style.display =
+                    "none";
+
+
+                // Hide quality selector
+
+                videoQualityBox.style.display =
+                    "none";
+
+
+                // Show audio
+
+                audioContainer.style.display =
+                    "block";
+
+
+                // Get audio source
+
+                const audioPath =
+                    audioSource.getAttribute("src");
+
+
+                console.log(
+                    "Data-Saver audio path:",
+                    audioPath
+                );
+
+
+                // Check audio exists
+
+                if (
+                    !audioPath ||
+                    audioPath.trim() === ""
+                ) {
+
+                    alert(
+                        "No audio file is available for this lesson."
+                    );
+
+
+                    toggle.checked = false;
+
+                    videoContainer.style.display =
+                        "block";
+
+                    videoQualityBox.style.display =
+                        "flex";
+
+                    audioContainer.style.display =
+                        "none";
+
+                    return;
+
+                }
+
+
+                // ==========================================
+                // WAIT FOR AUDIO TO LOAD
+                // ==========================================
+
+                function startAudioAtVideoPosition() {
+
+                    audioPlayer.currentTime =
+                        videoTime;
+
+
+                    console.log(
+                        "Audio position set to:",
+                        audioPlayer.currentTime
+                    );
+
+
+                    audioPlayer.play().catch(
+                        function (error) {
+
+                            console.log(
+                                "Audio playback error:",
+                                error
+                            );
+
+                        }
+                    );
+
+                }
+
+
+                // If audio metadata is already available
+
+                if (audioPlayer.readyState >= 1) {
+
+                    startAudioAtVideoPosition();
+
+                }
+
+
+                // Otherwise wait for metadata
+
+                else {
+
+                    audioPlayer.addEventListener(
+                        "loadedmetadata",
+                        function audioReady() {
+
+                            startAudioAtVideoPosition();
+
+
+                            audioPlayer.removeEventListener(
+                                "loadedmetadata",
+                                audioReady
+                            );
+
+                        }
+                    );
+
+                }
 
             }
 
 
-            // Reload audio source
-            audioPlayer.load();
+            // ==========================================
+            // DATA-SAVER OFF
+            // ==========================================
+
+            else {
+
+                // Save audio position BEFORE stopping it
+
+                const audioTime =
+                    audioPlayer.currentTime;
 
 
-            // Show audio player
-            audioContainer.style.display = "block";
+                console.log(
+                    "Switching to Normal Mode"
+                );
+
+                console.log(
+                    "Audio position:",
+                    audioTime
+                );
+
+
+                // Stop audio
+
+                audioPlayer.pause();
+
+
+                // Set video position
+
+                videoPlayer.currentTime =
+                    audioTime;
+
+
+                // Hide audio
+
+                audioContainer.style.display =
+                    "none";
+
+
+                // Show video
+
+                videoContainer.style.display =
+                    "block";
+
+
+                // Show quality selector
+
+                videoQualityBox.style.display =
+                    "flex";
+
+
+                // Continue video
+
+                videoPlayer.play().catch(
+                    function (error) {
+
+                        console.log(
+                            "Video playback error:",
+                            error
+                        );
+
+                    }
+                );
+
+            }
 
         }
-
-
-        // ==========================================
-        // DATA-SAVER OFF
-        // ==========================================
-
-        else {
-
-            // Stop audio
-            audioPlayer.pause();
-
-            // Hide audio
-            audioContainer.style.display = "none";
-
-            // Show video
-            videoContainer.style.display = "block";
-
-            // Show video quality selector
-            videoQualityBox.style.display = "flex";
-
-        }
-
-    });
+    );
 
 }
 
 
 // Start Data-Saver Mode
+
 setupDataSaverMode();
+
 
 
 

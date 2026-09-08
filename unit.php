@@ -89,21 +89,39 @@ if (!$unit) {
 // GET LESSONS FOR THIS UNIT
 // ==========================================
 
+$user_id = (int)$_SESSION["user_id"];
+
 $sql = "SELECT
-            lesson_id,
-            lesson_number,
-            title,
-            description,
-            duration_minutes,
-            video_path,
-            audio_path
+            lessons.lesson_id,
+            lessons.lesson_number,
+            lessons.title,
+            lessons.description,
+            lessons.duration_minutes,
+            lessons.video_path,
+            lessons.audio_path,
+
+            COALESCE(
+                student_progress.completed,
+                0
+            ) AS completed
+
         FROM lessons
-        WHERE unit_id = ?
-        ORDER BY lesson_id ASC";
+
+        LEFT JOIN student_progress
+            ON lessons.lesson_id = student_progress.lesson_id
+            AND student_progress.user_id = ?
+
+        WHERE lessons.unit_id = ?
+
+        ORDER BY lessons.lesson_id ASC";
 
 $stmt = $conn->prepare($sql);
 
-$stmt->bind_param("i", $unit_id);
+$stmt->bind_param(
+    "ii",
+    $user_id,
+    $unit_id
+);
 
 $stmt->execute();
 
@@ -118,7 +136,6 @@ while ($row = $result->fetch_assoc()) {
 }
 
 $stmt->close();
-
 ?>
 
 
@@ -561,21 +578,35 @@ $stmt->close();
 
                     </div>
 
-
                     <div class="lesson-actions">
 
-                        <a
-                            href="lesson.php?lesson=<?php echo $lesson["lesson_id"]; ?>"
-                            class="btn btn-units-primary btn-sm"
-                        >
+    <?php if ($lesson["completed"] == 1): ?>
 
-                            <i class="bi bi-play-circle me-1"></i>
+        <span class="btn btn-success btn-sm disabled">
 
-                            Start Lesson
+            <i class="bi bi-check-circle-fill me-1"></i>
 
-                        </a>
+            Completed
 
-                    </div>
+        </span>
+
+    <?php else: ?>
+
+        <a
+            href="lesson.php?lesson=<?php echo $lesson["lesson_id"]; ?>"
+            class="btn btn-units-primary btn-sm"
+        >
+
+            <i class="bi bi-play-circle me-1"></i>
+
+            Start Lesson
+
+        </a>
+
+    <?php endif; ?>
+
+</div>
+                    
 
                 </div>
 
