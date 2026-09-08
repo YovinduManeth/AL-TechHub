@@ -136,6 +136,33 @@ while ($row = $result->fetch_assoc()) {
 }
 
 $stmt->close();
+
+// ==========================================
+// Calculate Unit Progress
+// ==========================================
+
+$total_lessons = count($lessons);
+
+$completed_lessons = 0;
+
+foreach ($lessons as $lesson) {
+
+    if ($lesson["completed"] == 1) {
+        $completed_lessons++;
+    }
+
+}
+
+$progress_percentage = 0;
+
+if ($total_lessons > 0) {
+
+    $progress_percentage =
+        round(
+            ($completed_lessons / $total_lessons) * 100
+        );
+
+}
 ?>
 
 
@@ -378,6 +405,45 @@ $stmt->close();
         </p>
 
     </div>
+
+    <!-- Unit Progress -->
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+
+            <h5 class="mb-0 fw-bold">
+                Unit Progress
+            </h5>
+
+            <span class="fw-semibold">
+                <?php echo $completed_lessons; ?>
+                /
+                <?php echo $total_lessons; ?>
+                Lessons Completed
+            </span>
+
+        </div>
+
+        <div class="progress" style="height: 12px;">
+
+            <div
+                class="progress-bar"
+                role="progressbar"
+                style="width: <?php echo $progress_percentage; ?>%;"
+                aria-valuenow="<?php echo $progress_percentage; ?>"
+                aria-valuemin="0"
+                aria-valuemax="100"
+            >
+                <?php echo $progress_percentage; ?>%
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 
     <!-- Learning Content -->
