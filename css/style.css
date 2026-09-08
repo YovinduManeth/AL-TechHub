@@ -6516,3 +6516,36 @@ body {
     border-radius: 20px;
     transition: width 0.4s ease;
 }
+
+
+/* ==========================================
+   Overall Learning Progress
+========================================== */
+
+.overall-progress-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+}
+
+.overall-progress-title {
+    color: #111827;
+}
+
+.overall-progress-count {
+    color: #2563eb;
+    font-size: 0.95rem;
+}
+
+.overall-progress-bar {
+    height: 12px;
+    background-color: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.overall-progress-fill {
+    background-color: #2563eb;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}

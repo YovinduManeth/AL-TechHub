@@ -74,6 +74,93 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 
 // ==========================================
+// GET SUBJECT PROGRESS
+// ==========================================
+
+$subject_progress = [];
+
+foreach ($student_subjects as $subject) {
+
+    $subject_id = (int)$subject["subject_id"];
+
+    $sql = "SELECT
+                COUNT(DISTINCT units.unit_id) AS total_units,
+
+                COUNT(
+                    DISTINCT CASE
+                        WHEN unit_totals.total_lessons > 0
+                        AND unit_totals.completed_lessons = unit_totals.total_lessons
+                        THEN units.unit_id
+                    END
+                ) AS completed_units
+
+            FROM units
+
+            LEFT JOIN (
+
+                SELECT
+                    units.unit_id,
+
+                    COUNT(lessons.lesson_id) AS total_lessons,
+
+                    COUNT(
+                        CASE
+                            WHEN student_progress.completed = 1
+                            THEN 1
+                        END
+                    ) AS completed_lessons
+
+                FROM units
+
+                LEFT JOIN lessons
+                    ON units.unit_id = lessons.unit_id
+
+                LEFT JOIN student_progress
+                    ON lessons.lesson_id = student_progress.lesson_id
+                    AND student_progress.user_id = ?
+
+                WHERE units.subject_id = ?
+
+                GROUP BY units.unit_id
+
+            ) AS unit_totals
+
+                ON units.unit_id = unit_totals.unit_id
+
+            WHERE units.subject_id = ?";
+
+    $progress_stmt = $conn->prepare($sql);
+
+    $progress_stmt->bind_param(
+        "iii",
+        $user_id,
+        $subject_id,
+        $subject_id
+    );
+
+    $progress_stmt->execute();
+
+    $progress_result =
+        $progress_stmt->get_result();
+
+    $progress_data =
+        $progress_result->fetch_assoc();
+
+    $subject_progress[$subject_id] = [
+
+        "total_units" =>
+            (int)$progress_data["total_units"],
+
+        "completed_units" =>
+            (int)$progress_data["completed_units"]
+
+    ];
+
+    $progress_stmt->close();
+
+}
+
+// ==========================================
 // GET QUIZ HISTORY
 // ==========================================
 
@@ -109,6 +196,71 @@ while ($row = $result->fetch_assoc()) {
 }
 
 $stmt->close();
+
+// ==========================================
+// GET OVERALL LESSON PROGRESS
+// ==========================================
+
+$sql = "SELECT
+            COUNT(lessons.lesson_id) AS total_lessons,
+
+            COUNT(
+                CASE
+                    WHEN student_progress.completed = 1
+                    THEN 1
+                END
+            ) AS completed_lessons
+
+        FROM lessons
+
+        INNER JOIN units
+            ON lessons.unit_id = units.unit_id
+
+        INNER JOIN student_subjects
+            ON units.subject_id = student_subjects.subject_id
+
+        LEFT JOIN student_progress
+            ON lessons.lesson_id = student_progress.lesson_id
+            AND student_progress.user_id = ?
+
+        WHERE student_subjects.user_id = ?";
+
+$stmt = $conn->prepare($sql);
+
+$stmt->bind_param(
+    "ii",
+    $user_id,
+    $user_id
+);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+$overall_progress = $result->fetch_assoc();
+
+$stmt->close();
+
+
+// ==========================================
+// CALCULATE OVERALL PROGRESS PERCENTAGE
+// ==========================================
+
+$total_lessons = (int)$overall_progress["total_lessons"];
+
+$completed_lessons = (int)$overall_progress["completed_lessons"];
+
+$overall_progress_percentage = 0;
+
+if ($total_lessons > 0) {
+
+    $overall_progress_percentage =
+        round(
+            ($completed_lessons / $total_lessons) * 100
+        );
+
+}
+
 
 ?>
 
@@ -329,6 +481,60 @@ $stmt->close();
 
         </div>
 
+        <!-- Overall Learning Progress -->
+
+<div class="card border-0 shadow-sm mb-4 overall-progress-card">
+
+    <div class="card-body p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h5 class="mb-0 fw-bold overall-progress-title">
+                Overall Learning Progress
+            </h5>
+
+            <span class="fw-semibold overall-progress-count">
+
+                <?php echo $completed_lessons; ?>
+                /
+                <?php echo $total_lessons; ?>
+                Lessons Completed
+
+            </span>
+
+        </div>
+
+
+        <div class="progress overall-progress-bar">
+
+            <div
+                class="progress-bar overall-progress-fill"
+                role="progressbar"
+                style="width: <?php echo $overall_progress_percentage; ?>%;"
+                aria-valuenow="<?php echo $overall_progress_percentage; ?>"
+                aria-valuemin="0"
+                aria-valuemax="100"
+            >
+
+            </div>
+
+        </div>
+
+
+        <div class="text-end mt-2">
+
+            <small class="text-muted fw-semibold">
+
+                <?php echo $overall_progress_percentage; ?>% Complete
+
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
 
         <!-- Section Heading -->
         <div class="mb-3">
@@ -417,7 +623,22 @@ $stmt->close();
 
                         <span>Completed Units</span>
 
-                        <span>0 / 0</span>
+                        <span>
+
+                            <?php
+
+                            $subject_id =
+                                (int)$subject["subject_id"];
+
+                            echo $subject_progress[$subject_id]["completed_units"];
+
+                            echo " / ";
+
+                            echo $subject_progress[$subject_id]["total_units"];
+
+                            ?>
+
+                        </span>
 
                     </div>
 
@@ -428,9 +649,35 @@ $stmt->close();
                     >
 
                         <div
-                            class="progress-bar dashboard-progress"
-                            style="width: 0%;"
-                        ></div>
+    class="progress-bar dashboard-progress"
+    style="width:
+        <?php
+
+        $subject_id =
+            (int)$subject["subject_id"];
+
+        $completed_units =
+            $subject_progress[$subject_id]["completed_units"];
+
+        $total_units =
+            $subject_progress[$subject_id]["total_units"];
+
+        $subject_percentage = 0;
+
+        if ($total_units > 0) {
+
+            $subject_percentage =
+                round(
+                    ($completed_units / $total_units) * 100
+                );
+
+        }
+
+        echo $subject_percentage;
+
+        ?>%;
+"
+></div>
 
                     </div>
 
