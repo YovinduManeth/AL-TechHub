@@ -466,15 +466,13 @@ $subject_stmt->close();
                         </a>
 
 
-                        <button
-                            type="button"
+                        <a
+                            href="change-password.php"
                             class="btn btn-outline-primary"
                         >
-
                             <i class="bi bi-key me-1"></i>
                             Change Password
-
-                        </button>
+                        </a>
 
 
                         <a
