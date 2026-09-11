@@ -457,15 +457,13 @@ $subject_stmt->close();
 
                     <div class="d-flex flex-column flex-md-row gap-2">
 
-                        <button
-                            type="button"
+                        <a
+                            href="edit-profile.php"
                             class="btn btn-dashboard"
                         >
-
                             <i class="bi bi-pencil-square me-1"></i>
                             Edit Profile
-
-                        </button>
+                        </a>
 
 
                         <button
