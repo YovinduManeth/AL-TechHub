@@ -1,5 +1,22 @@
 <?php
 
+session_start();
+
+
+// ==========================================
+// ADMIN ACCESS PROTECTION
+// ==========================================
+
+if (
+    !isset($_SESSION["user_id"]) ||
+    !isset($_SESSION["role"]) ||
+    $_SESSION["role"] !== "admin"
+) {
+    header("Location: admin-login.html");
+    exit();
+}
+
+
 set_time_limit(600);
 
 require_once "php/db.php";
