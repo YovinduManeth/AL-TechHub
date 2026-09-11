@@ -1,6 +1,23 @@
 
 <?php
 
+session_start();
+
+
+// ==========================================
+// ADMIN ACCESS PROTECTION
+// ==========================================
+
+if (
+    !isset($_SESSION["user_id"]) ||
+    !isset($_SESSION["role"]) ||
+    $_SESSION["role"] !== "admin"
+) {
+    header("Location: admin-login.html");
+    exit();
+}
+
+
 require_once "php/db.php";
 
 $message = "";
@@ -176,7 +193,7 @@ while ($row = $result->fetch_assoc()) {
 
 
                     <a
-                        href="login.html"
+                        href="php/logout.php"
                         class="btn btn-admin-logout btn-sm px-3"
                     >
 
