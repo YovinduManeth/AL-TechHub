@@ -1,3 +1,16 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.html?error=login_required");
+    exit();
+}
+
+$user_email = $_SESSION["email"] ?? "User Account";
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -92,7 +105,7 @@
                     <li class="nav-item">
                         <a
                             class="nav-link dashboard-nav-link active"
-                            href="contact.html"
+                            href="contact.php"
                         >
                             <i class="bi bi-envelope me-1"></i>
                             Contact Us
@@ -105,12 +118,12 @@
                 <div class="d-flex align-items-center gap-3">
 
     <a
-        href="profile.php"
-        class="dashboard-user text-decoration-none"
-    >
-        <i class="bi bi-person-circle me-1"></i>
-        User Account
-    </a>
+    href="profile.php"
+    class="dashboard-user text-decoration-none"
+>
+    <i class="bi bi-person-circle me-1"></i>
+    <?php echo htmlspecialchars($user_email); ?>
+</a>
 
 
     <!-- Day / Night Mode -->
