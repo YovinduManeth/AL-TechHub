@@ -7,7 +7,7 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
-$user_email = $_SESSION["email"] ?? "User Account";
+$username = $_SESSION["username"];
 
 ?>
 
@@ -122,7 +122,7 @@ $user_email = $_SESSION["email"] ?? "User Account";
     class="dashboard-user text-decoration-none"
 >
     <i class="bi bi-person-circle me-1"></i>
-    <?php echo htmlspecialchars($user_email); ?>
+    <?php echo htmlspecialchars($username); ?>
 </a>
 
 
