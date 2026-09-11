@@ -166,20 +166,6 @@ $subject_stmt->close();
                 </li>
 
 
-                <li class="nav-item">
-
-                    <a
-                        class="nav-link dashboard-nav-link"
-                        href="resources.php"
-                    >
-
-                        <i class="bi bi-book me-1"></i>
-                        Resources
-
-                    </a>
-
-                </li>
-
 
                 <li class="nav-item">
 
