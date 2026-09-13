@@ -7,6 +7,26 @@ $message_type = "";
 
 
 // ==========================================
+// RECOVERY TYPE
+// ==========================================
+
+$recovery_type =
+    $_POST["type"] ??
+    $_GET["type"] ??
+    "student";
+
+
+// Only allow student or admin
+
+if (
+    $recovery_type !== "student" &&
+    $recovery_type !== "admin"
+) {
+    $recovery_type = "student";
+}
+
+
+// ==========================================
 // FORM SUBMISSION
 // ==========================================
 
@@ -39,14 +59,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // FIND USER
         // ==========================================
 
-        $sql = "SELECT user_id, full_name
-                FROM users
-                WHERE email = ?
-                LIMIT 1";
+        $sql = "SELECT user_id, full_name, role
+        FROM users
+        WHERE email = ?
+        AND role = ?
+        LIMIT 1";
 
         $stmt = $conn->prepare($sql);
 
-        $stmt->bind_param("s", $email);
+        $stmt->bind_param(
+            "ss",
+            $email,
+            $recovery_type
+        );
 
         $stmt->execute();
 
@@ -435,9 +460,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
                 <form
-                    method="POST"
-                    action="forgot-password.php"
-                >
+    method="POST"
+    action="forgot-password.php"
+>
+    
+    <input
+        type="hidden"
+        name="type"
+        value="<?php echo htmlspecialchars($recovery_type); ?>"
+    >
 
 
                     <!-- Email -->
