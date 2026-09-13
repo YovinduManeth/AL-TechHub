@@ -214,6 +214,17 @@
 
                 </div>
 
+                <!-- =========================================
+                        LOGIN ERROR MESSAGE
+                    ========================================== -->
+
+                    <div
+                        id="loginError"
+                        class="alert alert-danger d-none"
+                        role="alert"
+                    >
+                    </div>
+
 
 
                 <!-- =========================================
@@ -404,6 +415,49 @@ function togglePassword() {
         passwordIcon.classList.add("bi-eye");
 
     }
+}
+
+// ==========================================
+// DISPLAY LOGIN ERROR MESSAGE
+// ==========================================
+
+const urlParams = new URLSearchParams(
+    window.location.search
+);
+
+const error = urlParams.get("error");
+
+const loginError =
+    document.getElementById("loginError");
+
+
+if (error === "empty") {
+
+    loginError.textContent =
+        "Please enter your username and password.";
+
+    loginError.classList.remove("d-none");
+
+}
+
+
+if (error === "invalid") {
+
+    loginError.textContent =
+        "Invalid administrator username or password.";
+
+    loginError.classList.remove("d-none");
+
+}
+
+
+if (error === "unauthorized") {
+
+    loginError.textContent =
+        "You are not authorized to access the administration portal.";
+
+    loginError.classList.remove("d-none");
+
 }
 </script>
 
