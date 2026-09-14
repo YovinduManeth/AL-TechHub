@@ -647,7 +647,9 @@ if (!$lesson) {
 
     <script>
 
-const currentLessonId = <?php echo $lesson["lesson_id"]; ?>;
+const currentLessonId =
+    <?php echo (int)$lesson["lesson_id"]; ?>;
+
 
 const videoPlayer =
     document.getElementById("videoPlayer");
@@ -657,6 +659,9 @@ const videoQuality =
 
 const dataModeToggle =
     document.getElementById("dataModeToggle");
+
+const videoContainer =
+    document.getElementById("videoContainer");
 
 const audioContainer =
     document.getElementById("audioContainer");
@@ -686,6 +691,61 @@ const videoQualities = {
 };
 
 
+// ==========================================
+// MARK LESSON AS COMPLETED
+// ==========================================
+
+function completeLesson() {
+
+    fetch("php/complete_lesson.php", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type":
+                "application/x-www-form-urlencoded"
+        },
+
+        body:
+            "lesson_id=" +
+            encodeURIComponent(currentLessonId)
+
+    })
+
+    .then(function (response) {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to complete lesson."
+            );
+
+        }
+
+        return response.text();
+
+    })
+
+    .then(function (data) {
+
+        console.log(
+            "Lesson completion:",
+            data
+        );
+
+    })
+
+    .catch(function (error) {
+
+        console.error(
+            "Lesson completion error:",
+            error
+        );
+
+    });
+
+}
+
 
 // ==========================================
 // CHANGE VIDEO QUALITY
@@ -700,17 +760,6 @@ videoQuality.addEventListener(
 
         const newVideoPath =
             videoQualities[selectedQuality];
-
-
-        console.log(
-            "Selected quality:",
-            selectedQuality
-        );
-
-        console.log(
-            "Video path:",
-            newVideoPath
-        );
 
 
         // Check whether video path exists
@@ -737,16 +786,13 @@ videoQuality.addEventListener(
         const wasPlaying =
             !videoPlayer.paused;
 
-        // Change video source directly
 
-            videoPlayer.src =
-                newVideoPath;
+        // Change video source
 
+        videoPlayer.src =
+            newVideoPath;
 
-            // Reload video
-
-            videoPlayer.load();
-        
+        videoPlayer.load();
 
 
         // Restore playback position
@@ -788,6 +834,157 @@ videoQuality.addEventListener(
 
 
 // ==========================================
+// DATA-SAVER MODE
+// ==========================================
+
+dataModeToggle.addEventListener(
+    "change",
+    function () {
+
+        const currentTime =
+            videoPlayer.currentTime;
+
+        const wasVideoPlaying =
+            !videoPlayer.paused;
+
+
+        if (this.checked) {
+
+            // ==================================
+            // DATA-SAVER ON
+            // ==================================
+
+            videoPlayer.pause();
+
+            videoContainer.style.display =
+                "none";
+
+            audioContainer.style.display =
+                "block";
+
+
+            // Hide video quality selector
+
+            const videoQualityBox =
+                videoQuality.closest(
+                    ".video-quality-box"
+                );
+
+            if (videoQualityBox) {
+
+                videoQualityBox.style.display =
+                    "none";
+
+            }
+
+
+            // Start audio from video position
+
+            audioPlayer.currentTime =
+                currentTime;
+
+
+            if (wasVideoPlaying) {
+
+                audioPlayer.play().catch(
+                    function (error) {
+
+                        console.log(
+                            "Audio playback error:",
+                            error
+                        );
+
+                    }
+                );
+
+            }
+
+        } else {
+
+            // ==================================
+            // DATA-SAVER OFF
+            // ==================================
+
+            const audioTime =
+                audioPlayer.currentTime;
+
+
+            audioPlayer.pause();
+
+            audioContainer.style.display =
+                "none";
+
+            videoContainer.style.display =
+                "block";
+
+
+            // Show video quality selector
+
+            const videoQualityBox =
+                videoQuality.closest(
+                    ".video-quality-box"
+                );
+
+            if (videoQualityBox) {
+
+                videoQualityBox.style.display =
+                    "flex";
+
+            }
+
+
+            // Continue video from audio position
+
+            videoPlayer.currentTime =
+                audioTime;
+
+
+            videoPlayer.play().catch(
+                function (error) {
+
+                    console.log(
+                        "Video playback error:",
+                        error
+                    );
+
+                }
+            );
+
+        }
+
+    }
+);
+
+
+// ==========================================
+// VIDEO COMPLETION
+// ==========================================
+
+videoPlayer.addEventListener(
+    "ended",
+    function () {
+
+        completeLesson();
+
+    }
+);
+
+
+// ==========================================
+// AUDIO COMPLETION
+// ==========================================
+
+audioPlayer.addEventListener(
+    "ended",
+    function () {
+
+        completeLesson();
+
+    }
+);
+
+
+// ==========================================
 // VIDEO ERROR CHECK
 // ==========================================
 
@@ -795,62 +992,10 @@ videoPlayer.addEventListener(
     "error",
     function () {
 
-        console.log(
+        console.error(
             "Video error:",
             videoPlayer.error
         );
-
-    }
-);
-
-// ==========================================
-// MARK LESSON AS COMPLETED
-// ==========================================
-
-// ==========================================
-// MARK LESSON AS COMPLETED - TEST
-// ==========================================
-
-videoPlayer.addEventListener(
-    "ended",
-    function () {
-
-        console.log("VIDEO ENDED!");
-        console.log("Lesson ID:", currentLessonId);
-
-        fetch("php/complete_lesson.php", {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-
-            body:
-                "lesson_id=" +
-                encodeURIComponent(currentLessonId)
-
-        })
-
-        .then(function (response) {
-
-            console.log("HTTP Status:", response.status);
-
-            return response.text();
-
-        })
-
-        .then(function (data) {
-
-            console.log("Server Response:", data);
-
-        })
-
-        .catch(function (error) {
-
-            console.error("FETCH ERROR:", error);
-
-        });
 
     }
 );
