@@ -177,7 +177,7 @@ $sql = "SELECT
         INNER JOIN quizzes
             ON quiz_attempts.quiz_id = quizzes.quiz_id
         WHERE quiz_attempts.user_id = ?
-        ORDER BY quiz_attempts.attempted_at ASC";
+        ORDER BY quiz_attempts.attempted_at DESC";
 
 $stmt = $conn->prepare($sql);
 
@@ -871,6 +871,18 @@ if ($total_lessons > 0) {
         <?php endif; ?>
 
     </div>
+
+</div>
+
+<div class="text-end mb-5">
+
+    <a
+        href="quiz-history.php"
+        class="btn btn-dashboard fw-bold px-4"
+    >
+        <i class="bi bi-clock-history me-1"></i>
+        View Full Quiz History
+    </a>
 
 </div>
 
